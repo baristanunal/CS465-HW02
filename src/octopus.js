@@ -26,46 +26,67 @@ var vertices = [
     vec4(-0.5, 0.5, 0.5, 1.0),
     vec4(0.5, 0.5, 0.5, 1.0),
     vec4(0.5, -0.5, 0.5, 1.0),
+
     vec4(-0.5, -0.5, -0.5, 1.0),
     vec4(-0.5, 0.5, -0.5, 1.0),
     vec4(0.5, 0.5, -0.5, 1.0),
     vec4(0.5, -0.5, -0.5, 1.0)
+
 ];
 
 
-var torsoId = 0;
-var headId = 1;
-var head1Id = 1;
-var head2Id = 10;
-var leftUpperArmId = 2;
-var leftLowerArmId = 3;
-var rightUpperArmId = 4;
-var rightLowerArmId = 5;
-var leftUpperLegId = 6;
-var leftLowerLegId = 7;
-var rightUpperLegId = 8;
-var rightLowerLegId = 9;
+//components for an octopus which has a head and 8 legs which has 3 parts each: upper, middle, lower.
+//the octopus have 25 components in total
 
+var octopusTorsoId = 0;
+var upperLeg1Id = 1;
+var upperLeg2Id = 2;
+var upperLeg3Id = 3;
+var upperLeg4Id = 4;
+var upperLeg5Id = 5;
+var upperLeg6Id = 6;
+var upperLeg7Id = 7;
+var upperLeg8Id = 8;
+
+var middleLeg1Id = 9;
+var middleLeg2Id = 10;
+var middleLeg3Id = 11;
+var middleLeg4Id = 12;
+var middleLeg5Id = 13;
+var middleLeg6Id = 14;
+var middleLeg7Id = 15;
+var middleLeg8Id = 16;
+
+var lowerLeg1Id = 17;
+var lowerLeg2Id = 18;
+var lowerLeg3Id = 19;
+var lowerLeg4Id = 20;
+var lowerLeg5Id = 21;
+var lowerLeg6Id = 22;
+var lowerLeg7Id = 23;
+var lowerLeg8Id = 24;
 
 var torsoHeight = 5.0;
 var torsoWidth = 1.0;
-var upperArmHeight = 3.0;
-var lowerArmHeight = 2.0;
-var upperArmWidth = 0.5;
-var lowerArmWidth = 0.5;
-var upperLegWidth = 0.5;
-var lowerLegWidth = 0.5;
-var lowerLegHeight = 2.0;
-var upperLegHeight = 3.0;
-var headHeight = 1.5;
-var headWidth = 1.0;
 
-var numNodes = 10;
-var numAngles = 11;
+var upperLegWidth = 0.5;
+var upperLegHeight = 3.0;
+
+var middleLegWidth = 0.5;
+var middleLegHeight = 3.0;
+
+var lowerLegWidth = 0.5;
+var lowerLegHeight = 3.0;
+
+var numNodes = 25;
+var numAngles = 24;
 var angle = 0;
 
+
 //theta is the angle of rotation for each node 
-var theta = [0, 0, 0, 0, 0, 0, 90, 0, 90, 0, 0];
+var theta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0];
 
 var numVertices = 24;
 
