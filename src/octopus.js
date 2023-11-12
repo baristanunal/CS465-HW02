@@ -139,7 +139,7 @@ function initNodes(Id) {
             break;
 
         case upperLeg1Id:
-            m = translate(2, 0, 2);
+            m = translate(2, -5, 2);
             figure[upperLeg1Id] = createNode(m, upperLeg, upperLeg2Id, middleLeg1Id);
             break;
 
