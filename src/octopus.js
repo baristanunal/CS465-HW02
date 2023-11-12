@@ -38,7 +38,7 @@ var vertices = [
 //components for an octopus which has a head and 8 legs which has 3 parts each: upper, middle, lower.
 //the octopus have 25 components in total
 
-var octopusTorsoId = 0;
+var headId = 0;
 var upperLeg1Id = 1;
 var upperLeg2Id = 2;
 var upperLeg3Id = 3;
@@ -66,17 +66,17 @@ var lowerLeg6Id = 22;
 var lowerLeg7Id = 23;
 var lowerLeg8Id = 24;
 
-var torsoHeight = 5.0;
-var torsoWidth = 1.0;
+var headHeight = 5.0;
+var headWidth = 5.0;
 
 var upperLegWidth = 0.5;
-var upperLegHeight = 3.0;
+var upperLegHeight = 5.0;
 
 var middleLegWidth = 0.5;
 var middleLegHeight = 3.0;
 
 var lowerLegWidth = 0.5;
-var lowerLegHeight = 3.0;
+var lowerLegHeight = 2.0;
 
 var numNodes = 25;
 var numAngles = 24;
@@ -129,83 +129,134 @@ function initNodes(Id) {
 
     var m = mat4();
 
+
     switch (Id) {
 
-        case torsoId:
-
-            m = rotate(theta[torsoId], 0, 1, 0);
-            figure[torsoId] = createNode(m, torso, null, headId);
-            break;
-
         case headId:
-        case head1Id:
-        case head2Id:
 
-
-            m = translate(0.0, torsoHeight + 0.5 * headHeight, 0.0);
-            m = mult(m, rotate(theta[head1Id], 1, 0, 0))
-            m = mult(m, rotate(theta[head2Id], 0, 1, 0));
-            m = mult(m, translate(0.0, -0.5 * headHeight, 0.0));
-            figure[headId] = createNode(m, head, leftUpperArmId, null);
+            m = rotate(theta[headId], 0, 1, 0);
+            figure[headId] = createNode(m, torso, null, upperLeg1Id);
             break;
 
-
-        case leftUpperArmId:
-
-            m = translate(-(torsoWidth + upperArmWidth), 0.3 * torsoHeight, 0.0);
-            m = mult(m, rotate(theta[leftUpperArmId], 1, 0, 0));
-            figure[leftUpperArmId] = createNode(m, leftUpperArm, rightUpperArmId, leftLowerArmId);
+        case upperLeg1Id:
+            m = translate(2, 0, 2);
+            figure[upperLeg1Id] = createNode(m, upperLeg1, upperLeg2Id, middleLeg1Id);
             break;
 
-        case rightUpperArmId:
-
-            m = translate(torsoWidth + upperArmWidth, 0.9 * torsoHeight, 0.0);
-            m = mult(m, rotate(theta[rightUpperArmId], 1, 0, 0));
-            figure[rightUpperArmId] = createNode(m, rightUpperArm, leftUpperLegId, rightLowerArmId);
+        case upperLeg2Id:
+            m = translate(2, -5, 0);
+            figure[upperLeg2Id] = createNode(m, upperLeg2, upperLeg3Id, middleLeg2Id);
             break;
 
-        case leftUpperLegId:
-
-            m = translate(-(torsoWidth + upperLegWidth), 0.1 * upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[leftUpperLegId], 1, 0, 0));
-            figure[leftUpperLegId] = createNode(m, leftUpperLeg, rightUpperLegId, leftLowerLegId);
+        case upperLeg3Id:
+            m = translate(2, -5, -2);
+            figure[upperLeg3Id] = createNode(m, upperLeg3, upperLeg4Id, middleLeg3Id);
             break;
 
-        case rightUpperLegId:
-
-            m = translate(torsoWidth + upperLegWidth, 0.1 * upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[rightUpperLegId], 1, 0, 0));
-            figure[rightUpperLegId] = createNode(m, rightUpperLeg, null, rightLowerLegId);
+        case upperLeg4Id:
+            m = translate(0, -5, -2);
+            figure[upperLeg4Id] = createNode(m, upperLeg4, upperLeg5Id, middleLeg4Id);
             break;
 
-        case leftLowerArmId:
-
-            m = translate(0.0, upperArmHeight, 0.0);
-            m = mult(m, rotate(theta[leftLowerArmId], 1, 0, 0));
-            figure[leftLowerArmId] = createNode(m, leftLowerArm, null, null);
+        case upperLeg5Id:
+            m = translate(-2, -5, -2);
+            figure[upperLeg5Id] = createNode(m, upperLeg5, upperLeg6Id, middleLeg5Id);
             break;
 
-        case rightLowerArmId:
-
-            m = translate(0.0, upperArmHeight, 0.0);
-            m = mult(m, rotate(theta[rightLowerArmId], 1, 0, 0));
-            figure[rightLowerArmId] = createNode(m, rightLowerArm, null, null);
+        case upperLeg6Id:
+            m = translate(-2, -5, 0);
+            figure[upperLeg6Id] = createNode(m, upperLeg6, upperLeg7Id, middleLeg6Id);
             break;
 
-        case leftLowerLegId:
-
-            m = translate(0.0, upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[leftLowerLegId], 1, 0, 0));
-            figure[leftLowerLegId] = createNode(m, leftLowerLeg, null, null);
+        case upperLeg7Id:
+            m = translate(-2, -5, 2);
+            figure[upperLeg7Id] = createNode(m, upperLeg7, upperLeg8Id, middleLeg7Id);
             break;
 
-        case rightLowerLegId:
-
-            m = translate(0.0, upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[rightLowerLegId], 1, 0, 0));
-            figure[rightLowerLegId] = createNode(m, rightLowerLeg, null, null);
+        case upperLeg8Id:
+            m = translate(0, -5, 2);
+            figure[upperLeg8Id] = createNode(m, upperLeg8, null, middleLeg8Id);
             break;
 
+        case middleLeg1Id:
+            m = translate(2, -10, 2);
+            figure[middleLeg1Id] = createNode(m, middleLeg1, null, lowerLeg1Id);
+            break;
+
+        case middleLeg2Id:
+            m = translate(2, -10, 0);
+            figure[middleLeg2Id] = createNode(m, middleLeg2, null, lowerLeg2Id);
+            break;
+
+        case middleLeg3Id:
+            m = translate(2, -10, -2);
+            figure[middleLeg3Id] = createNode(m, middleLeg3, null, lowerLeg3Id);
+            break;
+
+        case middleLeg4Id:
+            m = translate(0, -10, -2);
+            figure[middleLeg4Id] = createNode(m, middleLeg4, null, lowerLeg4Id);
+            break;
+
+        case middleLeg5Id:
+            m = translate(-2, -10, -2);
+            figure[middleLeg5Id] = createNode(m, middleLeg5, null, lowerLeg5Id);
+            break;
+
+        case middleLeg6Id:
+            m = translate(-2, -10, 0);
+            figure[middleLeg6Id] = createNode(m, middleLeg6, null, lowerLeg6Id);
+            break;
+
+        case middleLeg7Id:
+            m = translate(-2, -10, 2);
+            figure[middleLeg7Id] = createNode(m, middleLeg7, null, lowerLeg7Id);
+            break;
+
+        case middleLeg8Id:
+            m = translate(0, -10, 2);
+            figure[middleLeg8Id] = createNode(m, middleLeg8, null, lowerLeg8Id);
+            break;
+
+        case lowerLeg1Id:
+            m = translate(2, -12, 2);
+            figure[lowerLeg1Id] = createNode(m, lowerLeg1, null, null);
+            break;
+
+        case lowerLeg2Id:
+            m = translate(2, -12, 0);
+            figure[lowerLeg2Id] = createNode(m, lowerLeg2, null, null);
+            break;
+
+        case lowerLeg3Id:
+            m = translate(2, -12, -2);
+            figure[lowerLeg3Id] = createNode(m, lowerLeg3, null, null);
+            break;
+
+        case lowerLeg4Id:
+            m = translate(0, -12, -2);
+            figure[lowerLeg4Id] = createNode(m, lowerLeg4, null, null);
+            break;
+
+        case lowerLeg5Id:
+            m = translate(-2, -12, -2);
+            figure[lowerLeg5Id] = createNode(m, lowerLeg5, null, null);
+            break;
+
+        case lowerLeg6Id:
+            m = translate(-2, -12, 0);
+            figure[lowerLeg6Id] = createNode(m, lowerLeg6, null, null);
+            break;
+
+        case lowerLeg7Id:
+            m = translate(-2, -12, 2);
+            figure[lowerLeg7Id] = createNode(m, lowerLeg7, null, null);
+            break;
+
+        case lowerLeg8Id:
+            m = translate(0, -12, 2);
+            figure[lowerLeg8Id] = createNode(m, lowerLeg8, null, null);
+            break;
     }
 
 }
