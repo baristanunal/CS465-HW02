@@ -369,51 +369,106 @@ window.onload = function init() {
     gl.enableVertexAttribArray(vPosition);
 
     document.getElementById("slider0").onchange = function () {
-        theta[torsoId] = event.srcElement.value;
-        initNodes(torsoId);
+        theta[headId] = event.srcElement.value;
+        initNodes(headId);
     };
     document.getElementById("slider1").onchange = function () {
-        theta[head1Id] = event.srcElement.value;
-        initNodes(head1Id);
+        theta[upperLeg1Id] = event.srcElement.value;
+        initNodes(upperLeg1Id);
     };
-
     document.getElementById("slider2").onchange = function () {
-        theta[leftUpperArmId] = event.srcElement.value;
-        initNodes(leftUpperArmId);
+        theta[upperLeg2Id] = event.srcElement.value;
+        initNodes(upperLeg2Id);
     };
     document.getElementById("slider3").onchange = function () {
-        theta[leftLowerArmId] = event.srcElement.value;
-        initNodes(leftLowerArmId);
+        theta[upperLeg3Id] = event.srcElement.value;
+        initNodes(upperLeg3Id);
     };
-
     document.getElementById("slider4").onchange = function () {
-        theta[rightUpperArmId] = event.srcElement.value;
-        initNodes(rightUpperArmId);
+        theta[upperLeg4Id] = event.srcElement.value;
+        initNodes(upperLeg4Id);
     };
     document.getElementById("slider5").onchange = function () {
-        theta[rightLowerArmId] = event.srcElement.value;
-        initNodes(rightLowerArmId);
+        theta[upperLeg5Id] = event.srcElement.value;
+        initNodes(upperLeg5Id);
     };
     document.getElementById("slider6").onchange = function () {
-        theta[leftUpperLegId] = event.srcElement.value;
-        initNodes(leftUpperLegId);
+        theta[upperLeg6Id] = event.srcElement.value;
+        initNodes(upperLeg6Id);
     };
     document.getElementById("slider7").onchange = function () {
-        theta[leftLowerLegId] = event.srcElement.value;
-        initNodes(leftLowerLegId);
+        theta[upperLeg7Id] = event.srcElement.value;
+        initNodes(upperLeg7Id);
     };
     document.getElementById("slider8").onchange = function () {
-        theta[rightUpperLegId] = event.srcElement.value;
-        initNodes(rightUpperLegId);
+        theta[upperLeg8Id] = event.srcElement.value;
+        initNodes(upperLeg8Id);
     };
     document.getElementById("slider9").onchange = function () {
-        theta[rightLowerLegId] = event.srcElement.value;
-        initNodes(rightLowerLegId);
+        theta[middleLeg1Id] = event.srcElement.value;
+        initNodes(middleLeg1Id);
     };
     document.getElementById("slider10").onchange = function () {
-        theta[head2Id] = event.srcElement.value;
-        initNodes(head2Id);
+        theta[middleLeg2Id] = event.srcElement.value;
+        initNodes(middleLeg2Id);
     };
+    document.getElementById("slider11").onchange = function () {
+        theta[middleLeg3Id] = event.srcElement.value;
+        initNodes(middleLeg3Id);
+    };
+    document.getElementById("slider12").onchange = function () {
+        theta[middleLeg4Id] = event.srcElement.value;
+        initNodes(middleLeg4Id);
+    };
+    document.getElementById("slider13").onchange = function () {
+        theta[middleLeg5Id] = event.srcElement.value;
+        initNodes(middleLeg5Id);
+    };
+    document.getElementById("slider14").onchange = function () {
+        theta[middleLeg6Id] = event.srcElement.value;
+        initNodes(middleLeg6Id);
+    };
+    document.getElementById("slider15").onchange = function () {
+        theta[middleLeg7Id] = event.srcElement.value;
+        initNodes(middleLeg7Id);
+    };
+    document.getElementById("slider16").onchange = function () {
+        theta[middleLeg8Id] = event.srcElement.value;
+        initNodes(middleLeg8Id);
+    };
+    document.getElementById("slider17").onchange = function () {
+        theta[lowerLeg1Id] = event.srcElement.value;
+        initNodes(lowerLeg1Id);
+    };
+    document.getElementById("slider18").onchange = function () {
+        theta[lowerLeg2Id] = event.srcElement.value;
+        initNodes(lowerLeg2Id);
+    };
+    document.getElementById("slider19").onchange = function () {
+        theta[lowerLeg3Id] = event.srcElement.value;
+        initNodes(lowerLeg3Id);
+    };
+    document.getElementById("slider20").onchange = function () {
+        theta[lowerLeg4Id] = event.srcElement.value;
+        initNodes(lowerLeg4Id);
+    };
+    document.getElementById("slider21").onchange = function () {
+        theta[lowerLeg5Id] = event.srcElement.value;
+        initNodes(lowerLeg5Id);
+    };
+    document.getElementById("slider22").onchange = function () {
+        theta[lowerLeg6Id] = event.srcElement.value;
+        initNodes(lowerLeg6Id);
+    };
+    document.getElementById("slider23").onchange = function () {
+        theta[lowerLeg7Id] = event.srcElement.value;
+        initNodes(lowerLeg7Id);
+    };
+    document.getElementById("slider24").onchange = function () {
+        theta[lowerLeg8Id] = event.srcElement.value;
+        initNodes(lowerLeg8Id);
+    }
+
 
 
     for (i = 0; i < numNodes; i++) initNodes(i);
