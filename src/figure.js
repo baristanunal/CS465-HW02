@@ -102,7 +102,7 @@ function initNodes(Id) {
     switch (Id) {
 
         case torsoId:
-
+t
             m = rotate(theta[torsoId], 0, 1, 0);
             figure[torsoId] = createNode(m, torso, null, headId);
             break;

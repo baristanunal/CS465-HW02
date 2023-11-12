@@ -272,14 +272,6 @@ function traverse(Id) {
     if (figure[Id].sibling != null) traverse(figure[Id].sibling);
 }
 
-function torso() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * torsoHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(torsoWidth, torsoHeight, torsoWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
 function head() {
 
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * headHeight, 0.0));
