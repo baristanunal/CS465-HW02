@@ -140,122 +140,122 @@ function initNodes(Id) {
 
         case upperLeg1Id:
             m = translate(2, 0, 2);
-            figure[upperLeg1Id] = createNode(m, upperLeg1, upperLeg2Id, middleLeg1Id);
+            figure[upperLeg1Id] = createNode(m, upperLeg, upperLeg2Id, middleLeg1Id);
             break;
 
         case upperLeg2Id:
             m = translate(2, -5, 0);
-            figure[upperLeg2Id] = createNode(m, upperLeg2, upperLeg3Id, middleLeg2Id);
+            figure[upperLeg2Id] = createNode(m, upperLeg, upperLeg3Id, middleLeg2Id);
             break;
 
         case upperLeg3Id:
             m = translate(2, -5, -2);
-            figure[upperLeg3Id] = createNode(m, upperLeg3, upperLeg4Id, middleLeg3Id);
+            figure[upperLeg3Id] = createNode(m, upperLeg, upperLeg4Id, middleLeg3Id);
             break;
 
         case upperLeg4Id:
             m = translate(0, -5, -2);
-            figure[upperLeg4Id] = createNode(m, upperLeg4, upperLeg5Id, middleLeg4Id);
+            figure[upperLeg4Id] = createNode(m, upperLeg, upperLeg5Id, middleLeg4Id);
             break;
 
         case upperLeg5Id:
             m = translate(-2, -5, -2);
-            figure[upperLeg5Id] = createNode(m, upperLeg5, upperLeg6Id, middleLeg5Id);
+            figure[upperLeg5Id] = createNode(m, upperLeg, upperLeg6Id, middleLeg5Id);
             break;
 
         case upperLeg6Id:
             m = translate(-2, -5, 0);
-            figure[upperLeg6Id] = createNode(m, upperLeg6, upperLeg7Id, middleLeg6Id);
+            figure[upperLeg6Id] = createNode(m, upperLeg, upperLeg7Id, middleLeg6Id);
             break;
 
         case upperLeg7Id:
             m = translate(-2, -5, 2);
-            figure[upperLeg7Id] = createNode(m, upperLeg7, upperLeg8Id, middleLeg7Id);
+            figure[upperLeg7Id] = createNode(m, upperLeg, upperLeg8Id, middleLeg7Id);
             break;
 
         case upperLeg8Id:
             m = translate(0, -5, 2);
-            figure[upperLeg8Id] = createNode(m, upperLeg8, null, middleLeg8Id);
+            figure[upperLeg8Id] = createNode(m, upperLeg, null, middleLeg8Id);
             break;
 
         case middleLeg1Id:
             m = translate(2, -10, 2);
-            figure[middleLeg1Id] = createNode(m, middleLeg1, null, lowerLeg1Id);
+            figure[middleLeg1Id] = createNode(m, middleLeg, null, lowerLeg1Id);
             break;
 
         case middleLeg2Id:
             m = translate(2, -10, 0);
-            figure[middleLeg2Id] = createNode(m, middleLeg2, null, lowerLeg2Id);
+            figure[middleLeg2Id] = createNode(m, middleLeg, null, lowerLeg2Id);
             break;
 
         case middleLeg3Id:
             m = translate(2, -10, -2);
-            figure[middleLeg3Id] = createNode(m, middleLeg3, null, lowerLeg3Id);
+            figure[middleLeg3Id] = createNode(m, middleLeg, null, lowerLeg3Id);
             break;
 
         case middleLeg4Id:
             m = translate(0, -10, -2);
-            figure[middleLeg4Id] = createNode(m, middleLeg4, null, lowerLeg4Id);
+            figure[middleLeg4Id] = createNode(m, middleLeg, null, lowerLeg4Id);
             break;
 
         case middleLeg5Id:
             m = translate(-2, -10, -2);
-            figure[middleLeg5Id] = createNode(m, middleLeg5, null, lowerLeg5Id);
+            figure[middleLeg5Id] = createNode(m, middleLeg, null, lowerLeg5Id);
             break;
 
         case middleLeg6Id:
             m = translate(-2, -10, 0);
-            figure[middleLeg6Id] = createNode(m, middleLeg6, null, lowerLeg6Id);
+            figure[middleLeg6Id] = createNode(m, middleLeg, null, lowerLeg6Id);
             break;
 
         case middleLeg7Id:
             m = translate(-2, -10, 2);
-            figure[middleLeg7Id] = createNode(m, middleLeg7, null, lowerLeg7Id);
+            figure[middleLeg7Id] = createNode(m, middleLeg, null, lowerLeg7Id);
             break;
 
         case middleLeg8Id:
             m = translate(0, -10, 2);
-            figure[middleLeg8Id] = createNode(m, middleLeg8, null, lowerLeg8Id);
+            figure[middleLeg8Id] = createNode(m, middleLeg, null, lowerLeg8Id);
             break;
 
         case lowerLeg1Id:
             m = translate(2, -12, 2);
-            figure[lowerLeg1Id] = createNode(m, lowerLeg1, null, null);
+            figure[lowerLeg1Id] = createNode(m, lowerLeg, null, null);
             break;
 
         case lowerLeg2Id:
             m = translate(2, -12, 0);
-            figure[lowerLeg2Id] = createNode(m, lowerLeg2, null, null);
+            figure[lowerLeg2Id] = createNode(m, lowerLeg, null, null);
             break;
 
         case lowerLeg3Id:
             m = translate(2, -12, -2);
-            figure[lowerLeg3Id] = createNode(m, lowerLeg3, null, null);
+            figure[lowerLeg3Id] = createNode(m, lowerLeg, null, null);
             break;
 
         case lowerLeg4Id:
             m = translate(0, -12, -2);
-            figure[lowerLeg4Id] = createNode(m, lowerLeg4, null, null);
+            figure[lowerLeg4Id] = createNode(m, lowerLeg, null, null);
             break;
 
         case lowerLeg5Id:
             m = translate(-2, -12, -2);
-            figure[lowerLeg5Id] = createNode(m, lowerLeg5, null, null);
+            figure[lowerLeg5Id] = createNode(m, lowerLeg, null, null);
             break;
 
         case lowerLeg6Id:
             m = translate(-2, -12, 0);
-            figure[lowerLeg6Id] = createNode(m, lowerLeg6, null, null);
+            figure[lowerLeg6Id] = createNode(m, lowerLeg, null, null);
             break;
 
         case lowerLeg7Id:
             m = translate(-2, -12, 2);
-            figure[lowerLeg7Id] = createNode(m, lowerLeg7, null, null);
+            figure[lowerLeg7Id] = createNode(m, lowerLeg, null, null);
             break;
 
         case lowerLeg8Id:
             m = translate(0, -12, 2);
-            figure[lowerLeg8Id] = createNode(m, lowerLeg8, null, null);
+            figure[lowerLeg8Id] = createNode(m, lowerLeg, null, null);
             break;
     }
 
@@ -280,7 +280,7 @@ function head() {
     for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
 }
 
-function upperLeg1() {
+function upperLeg() {
 
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
@@ -290,70 +290,8 @@ function upperLeg1() {
 
 }
 
-function upperLeg2() {
 
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function upperLeg3() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function upperLeg4() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function upperLeg5() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function upperLeg6() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function upperLeg7() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function upperLeg8() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function middleLeg1() {
+function middleLeg() {
 
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * middleLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(middleLegWidth, middleLegHeight, middleLegWidth));
@@ -363,6 +301,13 @@ function middleLeg1() {
 }
 
 
+function lowerLeg() {
+    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerLegHeight, 0.0));
+    instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth));
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
+    for (var i = 0; i < 6; i++)
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+}
 
 
 
