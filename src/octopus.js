@@ -26,46 +26,67 @@ var vertices = [
     vec4(-0.5, 0.5, 0.5, 1.0),
     vec4(0.5, 0.5, 0.5, 1.0),
     vec4(0.5, -0.5, 0.5, 1.0),
+
     vec4(-0.5, -0.5, -0.5, 1.0),
     vec4(-0.5, 0.5, -0.5, 1.0),
     vec4(0.5, 0.5, -0.5, 1.0),
     vec4(0.5, -0.5, -0.5, 1.0)
+
 ];
 
 
-var torsoId = 0;
-var headId = 1;
-var head1Id = 1;
-var head2Id = 10;
-var leftUpperArmId = 2;
-var leftLowerArmId = 3;
-var rightUpperArmId = 4;
-var rightLowerArmId = 5;
-var leftUpperLegId = 6;
-var leftLowerLegId = 7;
-var rightUpperLegId = 8;
-var rightLowerLegId = 9;
+//components for an octopus which has a head and 8 legs which has 3 parts each: upper, middle, lower.
+//the octopus have 25 components in total
 
+var headId = 0;
+var upperLeg1Id = 1;
+var upperLeg2Id = 2;
+var upperLeg3Id = 3;
+var upperLeg4Id = 4;
+var upperLeg5Id = 5;
+var upperLeg6Id = 6;
+var upperLeg7Id = 7;
+var upperLeg8Id = 8;
 
-var torsoHeight = 5.0;
-var torsoWidth = 1.0;
-var upperArmHeight = 3.0;
-var lowerArmHeight = 2.0;
-var upperArmWidth = 0.5;
-var lowerArmWidth = 0.5;
+var middleLeg1Id = 9;
+var middleLeg2Id = 10;
+var middleLeg3Id = 11;
+var middleLeg4Id = 12;
+var middleLeg5Id = 13;
+var middleLeg6Id = 14;
+var middleLeg7Id = 15;
+var middleLeg8Id = 16;
+
+var lowerLeg1Id = 17;
+var lowerLeg2Id = 18;
+var lowerLeg3Id = 19;
+var lowerLeg4Id = 20;
+var lowerLeg5Id = 21;
+var lowerLeg6Id = 22;
+var lowerLeg7Id = 23;
+var lowerLeg8Id = 24;
+
+var headHeight = 5.0;
+var headWidth = 5.0;
+
 var upperLegWidth = 0.5;
+var upperLegHeight = 5.0;
+
+var middleLegWidth = 0.5;
+var middleLegHeight = 3.0;
+
 var lowerLegWidth = 0.5;
 var lowerLegHeight = 2.0;
-var upperLegHeight = 3.0;
-var headHeight = 1.5;
-var headWidth = 1.0;
 
-var numNodes = 10;
-var numAngles = 11;
+var numNodes = 25;
+var numAngles = 24;
 var angle = 0;
 
+
 //theta is the angle of rotation for each node 
-var theta = [0, 0, 0, 0, 0, 0, 90, 0, 90, 0, 0];
+var theta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0];
 
 var numVertices = 24;
 
@@ -108,83 +129,134 @@ function initNodes(Id) {
 
     var m = mat4();
 
+
     switch (Id) {
 
-        case torsoId:
-
-            m = rotate(theta[torsoId], 0, 1, 0);
-            figure[torsoId] = createNode(m, torso, null, headId);
-            break;
-
         case headId:
-        case head1Id:
-        case head2Id:
 
-
-            m = translate(0.0, torsoHeight + 0.5 * headHeight, 0.0);
-            m = mult(m, rotate(theta[head1Id], 1, 0, 0))
-            m = mult(m, rotate(theta[head2Id], 0, 1, 0));
-            m = mult(m, translate(0.0, -0.5 * headHeight, 0.0));
-            figure[headId] = createNode(m, head, leftUpperArmId, null);
+            m = rotate(theta[headId], 0, 1, 0);
+            figure[headId] = createNode(m, head, null, upperLeg1Id);
             break;
 
-
-        case leftUpperArmId:
-
-            m = translate(-(torsoWidth + upperArmWidth), 0.3 * torsoHeight, 0.0);
-            m = mult(m, rotate(theta[leftUpperArmId], 1, 0, 0));
-            figure[leftUpperArmId] = createNode(m, leftUpperArm, rightUpperArmId, leftLowerArmId);
+        case upperLeg1Id:
+            m = translate(2, -5, 2);
+            figure[upperLeg1Id] = createNode(m, upperLeg, upperLeg2Id, middleLeg1Id);
             break;
 
-        case rightUpperArmId:
-
-            m = translate(torsoWidth + upperArmWidth, 0.9 * torsoHeight, 0.0);
-            m = mult(m, rotate(theta[rightUpperArmId], 1, 0, 0));
-            figure[rightUpperArmId] = createNode(m, rightUpperArm, leftUpperLegId, rightLowerArmId);
+        case upperLeg2Id:
+            m = translate(2, -5, 0);
+            figure[upperLeg2Id] = createNode(m, upperLeg, upperLeg3Id, middleLeg2Id);
             break;
 
-        case leftUpperLegId:
-
-            m = translate(-(torsoWidth + upperLegWidth), 0.1 * upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[leftUpperLegId], 1, 0, 0));
-            figure[leftUpperLegId] = createNode(m, leftUpperLeg, rightUpperLegId, leftLowerLegId);
+        case upperLeg3Id:
+            m = translate(2, -5, -2);
+            figure[upperLeg3Id] = createNode(m, upperLeg, upperLeg4Id, middleLeg3Id);
             break;
 
-        case rightUpperLegId:
-
-            m = translate(torsoWidth + upperLegWidth, 0.1 * upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[rightUpperLegId], 1, 0, 0));
-            figure[rightUpperLegId] = createNode(m, rightUpperLeg, null, rightLowerLegId);
+        case upperLeg4Id:
+            m = translate(0, -5, -2);
+            figure[upperLeg4Id] = createNode(m, upperLeg, upperLeg5Id, middleLeg4Id);
             break;
 
-        case leftLowerArmId:
-
-            m = translate(0.0, upperArmHeight, 0.0);
-            m = mult(m, rotate(theta[leftLowerArmId], 1, 0, 0));
-            figure[leftLowerArmId] = createNode(m, leftLowerArm, null, null);
+        case upperLeg5Id:
+            m = translate(-2, -5, -2);
+            figure[upperLeg5Id] = createNode(m, upperLeg, upperLeg6Id, middleLeg5Id);
             break;
 
-        case rightLowerArmId:
-
-            m = translate(0.0, upperArmHeight, 0.0);
-            m = mult(m, rotate(theta[rightLowerArmId], 1, 0, 0));
-            figure[rightLowerArmId] = createNode(m, rightLowerArm, null, null);
+        case upperLeg6Id:
+            m = translate(-2, -5, 0);
+            figure[upperLeg6Id] = createNode(m, upperLeg, upperLeg7Id, middleLeg6Id);
             break;
 
-        case leftLowerLegId:
-
-            m = translate(0.0, upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[leftLowerLegId], 1, 0, 0));
-            figure[leftLowerLegId] = createNode(m, leftLowerLeg, null, null);
+        case upperLeg7Id:
+            m = translate(-2, -5, 2);
+            figure[upperLeg7Id] = createNode(m, upperLeg, upperLeg8Id, middleLeg7Id);
             break;
 
-        case rightLowerLegId:
-
-            m = translate(0.0, upperLegHeight, 0.0);
-            m = mult(m, rotate(theta[rightLowerLegId], 1, 0, 0));
-            figure[rightLowerLegId] = createNode(m, rightLowerLeg, null, null);
+        case upperLeg8Id:
+            m = translate(0, -5, 2);
+            figure[upperLeg8Id] = createNode(m, upperLeg, null, middleLeg8Id);
             break;
 
+        case middleLeg1Id:
+            m = translate(2, -10, 2);
+            figure[middleLeg1Id] = createNode(m, middleLeg, null, lowerLeg1Id);
+            break;
+
+        case middleLeg2Id:
+            m = translate(2, -10, 0);
+            figure[middleLeg2Id] = createNode(m, middleLeg, null, lowerLeg2Id);
+            break;
+
+        case middleLeg3Id:
+            m = translate(2, -10, -2);
+            figure[middleLeg3Id] = createNode(m, middleLeg, null, lowerLeg3Id);
+            break;
+
+        case middleLeg4Id:
+            m = translate(0, -10, -2);
+            figure[middleLeg4Id] = createNode(m, middleLeg, null, lowerLeg4Id);
+            break;
+
+        case middleLeg5Id:
+            m = translate(-2, -10, -2);
+            figure[middleLeg5Id] = createNode(m, middleLeg, null, lowerLeg5Id);
+            break;
+
+        case middleLeg6Id:
+            m = translate(-2, -10, 0);
+            figure[middleLeg6Id] = createNode(m, middleLeg, null, lowerLeg6Id);
+            break;
+
+        case middleLeg7Id:
+            m = translate(-2, -10, 2);
+            figure[middleLeg7Id] = createNode(m, middleLeg, null, lowerLeg7Id);
+            break;
+
+        case middleLeg8Id:
+            m = translate(0, -10, 2);
+            figure[middleLeg8Id] = createNode(m, middleLeg, null, lowerLeg8Id);
+            break;
+
+        case lowerLeg1Id:
+            m = translate(2, -12, 2);
+            figure[lowerLeg1Id] = createNode(m, lowerLeg, null, null);
+            break;
+
+        case lowerLeg2Id:
+            m = translate(2, -12, 0);
+            figure[lowerLeg2Id] = createNode(m, lowerLeg, null, null);
+            break;
+
+        case lowerLeg3Id:
+            m = translate(2, -12, -2);
+            figure[lowerLeg3Id] = createNode(m, lowerLeg, null, null);
+            break;
+
+        case lowerLeg4Id:
+            m = translate(0, -12, -2);
+            figure[lowerLeg4Id] = createNode(m, lowerLeg, null, null);
+            break;
+
+        case lowerLeg5Id:
+            m = translate(-2, -12, -2);
+            figure[lowerLeg5Id] = createNode(m, lowerLeg, null, null);
+            break;
+
+        case lowerLeg6Id:
+            m = translate(-2, -12, 0);
+            figure[lowerLeg6Id] = createNode(m, lowerLeg, null, null);
+            break;
+
+        case lowerLeg7Id:
+            m = translate(-2, -12, 2);
+            figure[lowerLeg7Id] = createNode(m, lowerLeg, null, null);
+            break;
+
+        case lowerLeg8Id:
+            m = translate(0, -12, 2);
+            figure[lowerLeg8Id] = createNode(m, lowerLeg, null, null);
+            break;
     }
 
 }
@@ -200,14 +272,6 @@ function traverse(Id) {
     if (figure[Id].sibling != null) traverse(figure[Id].sibling);
 }
 
-function torso() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * torsoHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(torsoWidth, torsoHeight, torsoWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
 function head() {
 
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * headHeight, 0.0));
@@ -216,69 +280,36 @@ function head() {
     for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
 }
 
-function leftUpperArm() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperArmHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperArmWidth, upperArmHeight, upperArmWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function leftLowerArm() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerArmHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(lowerArmWidth, lowerArmHeight, lowerArmWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function rightUpperArm() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperArmHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperArmWidth, upperArmHeight, upperArmWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function rightLowerArm() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerArmHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(lowerArmWidth, lowerArmHeight, lowerArmWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function leftUpperLeg() {
+function upperLeg() {
 
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
+
+    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+
+}
+
+
+function middleLeg() {
+
+    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * middleLegHeight, 0.0));
+    instanceMatrix = mult(instanceMatrix, scale4(middleLegWidth, middleLegHeight, middleLegWidth));
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
+
     for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
 }
 
-function leftLowerLeg() {
 
+function lowerLeg() {
     instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerLegHeight, 0.0));
     instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth));
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+    for (var i = 0; i < 6; i++)
+        gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
 }
 
-function rightUpperLeg() {
 
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * upperLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(upperLegWidth, upperLegHeight, upperLegWidth));
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
-
-function rightLowerLeg() {
-
-    instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * lowerLegHeight, 0.0));
-    instanceMatrix = mult(instanceMatrix, scale4(lowerLegWidth, lowerLegHeight, lowerLegWidth))
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-    for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
-}
 
 function quad(a, b, c, d) {
     pointsArray.push(vertices[a]);
@@ -338,51 +369,107 @@ window.onload = function init() {
     gl.enableVertexAttribArray(vPosition);
 
     document.getElementById("slider0").onchange = function () {
-        theta[torsoId] = event.srcElement.value;
-        initNodes(torsoId);
+        theta[headId] = event.srcElement.value;
+        initNodes(headId);
     };
     document.getElementById("slider1").onchange = function () {
-        theta[head1Id] = event.srcElement.value;
-        initNodes(head1Id);
+        theta[upperLeg1Id] = event.srcElement.value;
+        initNodes(upperLeg1Id);
     };
-
     document.getElementById("slider2").onchange = function () {
-        theta[leftUpperArmId] = event.srcElement.value;
-        initNodes(leftUpperArmId);
+        theta[upperLeg2Id] = event.srcElement.value;
+        initNodes(upperLeg2Id);
     };
     document.getElementById("slider3").onchange = function () {
-        theta[leftLowerArmId] = event.srcElement.value;
-        initNodes(leftLowerArmId);
+        theta[upperLeg3Id] = event.srcElement.value;
+        initNodes(upperLeg3Id);
     };
-
     document.getElementById("slider4").onchange = function () {
-        theta[rightUpperArmId] = event.srcElement.value;
-        initNodes(rightUpperArmId);
+        theta[upperLeg4Id] = event.srcElement.value;
+        initNodes(upperLeg4Id);
     };
     document.getElementById("slider5").onchange = function () {
-        theta[rightLowerArmId] = event.srcElement.value;
-        initNodes(rightLowerArmId);
+        theta[upperLeg5Id] = event.srcElement.value;
+        initNodes(upperLeg5Id);
     };
     document.getElementById("slider6").onchange = function () {
-        theta[leftUpperLegId] = event.srcElement.value;
-        initNodes(leftUpperLegId);
+        theta[upperLeg6Id] = event.srcElement.value;
+        initNodes(upperLeg6Id);
     };
     document.getElementById("slider7").onchange = function () {
-        theta[leftLowerLegId] = event.srcElement.value;
-        initNodes(leftLowerLegId);
+        theta[upperLeg7Id] = event.srcElement.value;
+        initNodes(upperLeg7Id);
     };
     document.getElementById("slider8").onchange = function () {
-        theta[rightUpperLegId] = event.srcElement.value;
-        initNodes(rightUpperLegId);
+        theta[upperLeg8Id] = event.srcElement.value;
+        initNodes(upperLeg8Id);
     };
     document.getElementById("slider9").onchange = function () {
-        theta[rightLowerLegId] = event.srcElement.value;
-        initNodes(rightLowerLegId);
+        theta[middleLeg1Id] = event.srcElement.value;
+        initNodes(middleLeg1Id);
     };
     document.getElementById("slider10").onchange = function () {
-        theta[head2Id] = event.srcElement.value;
-        initNodes(head2Id);
+        theta[middleLeg2Id] = event.srcElement.value;
+        initNodes(middleLeg2Id);
     };
+    document.getElementById("slider11").onchange = function () {
+        theta[middleLeg3Id] = event.srcElement.value;
+        initNodes(middleLeg3Id);
+    };
+    document.getElementById("slider12").onchange = function () {
+        theta[middleLeg4Id] = event.srcElement.value;
+        initNodes(middleLeg4Id);
+    };
+    document.getElementById("slider13").onchange = function () {
+        theta[middleLeg5Id] = event.srcElement.value;
+        initNodes(middleLeg5Id);
+    };
+    document.getElementById("slider14").onchange = function () {
+        theta[middleLeg6Id] = event.srcElement.value;
+        initNodes(middleLeg6Id);
+    };
+    document.getElementById("slider15").onchange = function () {
+        theta[middleLeg7Id] = event.srcElement.value;
+        initNodes(middleLeg7Id);
+    };
+    document.getElementById("slider16").onchange = function () {
+        theta[middleLeg8Id] = event.srcElement.value;
+        initNodes(middleLeg8Id);
+    };
+    document.getElementById("slider17").onchange = function () {
+        theta[lowerLeg1Id] = event.srcElement.value;
+        initNodes(lowerLeg1Id);
+    };
+    document.getElementById("slider18").onchange = function () {
+        theta[lowerLeg2Id] = event.srcElement.value;
+        initNodes(lowerLeg2Id);
+    };
+    document.getElementById("slider19").onchange = function () {
+        theta[lowerLeg3Id] = event.srcElement.value;
+        initNodes(lowerLeg3Id);
+    };
+    document.getElementById("slider20").onchange = function () {
+        theta[lowerLeg4Id] = event.srcElement.value;
+        initNodes(lowerLeg4Id);
+    };
+    document.getElementById("slider21").onchange = function () {
+        theta[lowerLeg5Id] = event.srcElement.value;
+        initNodes(lowerLeg5Id);
+    };
+    document.getElementById("slider22").onchange = function () {
+        theta[lowerLeg6Id] = event.srcElement.value;
+        initNodes(lowerLeg6Id);
+    };
+    document.getElementById("slider23").onchange = function () {
+        theta[lowerLeg7Id] = event.srcElement.value;
+        initNodes(lowerLeg7Id);
+    };
+    document.getElementById("slider24").onchange = function () {
+        theta[lowerLeg8Id] = event.srcElement.value;
+        initNodes(lowerLeg8Id);
+    }
+
+
 
     for (i = 0; i < numNodes; i++) initNodes(i);
 
@@ -393,7 +480,7 @@ window.onload = function init() {
 var render = function () {
 
     gl.clear(gl.COLOR_BUFFER_BIT);
-    traverse(torsoId);
+    traverse(headId);
     requestAnimFrame(render);
 }
 
