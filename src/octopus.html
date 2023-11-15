@@ -7,6 +7,8 @@
         .slider-column {
             float: left;
             margin-right: 20px;
+            border: 1px solid black;
+            padding: 10px;
         }
 
         /* Style for the header */
@@ -58,12 +60,15 @@
                 Oops ... your browser doesn't support the HTML5 canvas element
             </canvas>
         </div>
-    <div id="slider0">
-        <div class="leg-header">Head</div>
-        head angle -180
-        <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-        180
-    </div><br/>
+        <div class="slider-column">
+            <div id="slider0">
+                <div class="leg-header">Head</div>
+                head angle -180
+                <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+                180
+            </div><br/>
+        </div>
+    
 
     <div class="slider-column">
         <div class="leg-header">Leg 1</div>
