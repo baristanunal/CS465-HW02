@@ -394,107 +394,110 @@ window.onload = function init() {
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
 
-    document.getElementById("slider0").onchange = function () {
-        theta[headId] = event.srcElement.value;
-        initNodes(headId);
-    };
-    document.getElementById("slider1").onchange = function () {
-        theta[upperLeg1Id] = event.srcElement.value;
-        initNodes(upperLeg1Id);
-    };
-    document.getElementById("slider2").onchange = function () {
-        theta[upperLeg2Id] = event.srcElement.value;
-        initNodes(upperLeg2Id);
-    };
-    document.getElementById("slider3").onchange = function () {
-        theta[upperLeg3Id] = event.srcElement.value;
-        initNodes(upperLeg3Id);
-    };
-    document.getElementById("slider4").onchange = function () {
-        theta[upperLeg4Id] = event.srcElement.value;
-        initNodes(upperLeg4Id);
-    };
-    document.getElementById("slider5").onchange = function () {
-        theta[upperLeg5Id] = event.srcElement.value;
-        initNodes(upperLeg5Id);
-    };
-    document.getElementById("slider6").onchange = function () {
-        theta[upperLeg6Id] = event.srcElement.value;
-        initNodes(upperLeg6Id);
-    };
-    document.getElementById("slider7").onchange = function () {
-        theta[upperLeg7Id] = event.srcElement.value;
-        initNodes(upperLeg7Id);
-    };
-    document.getElementById("slider8").onchange = function () {
-        theta[upperLeg8Id] = event.srcElement.value;
-        initNodes(upperLeg8Id);
-    };
-    document.getElementById("slider9").onchange = function () {
-        theta[middleLeg1Id] = event.srcElement.value;
-        initNodes(middleLeg1Id);
-    };
-    document.getElementById("slider10").onchange = function () {
-        theta[middleLeg2Id] = event.srcElement.value;
-        initNodes(middleLeg2Id);
-    };
-    document.getElementById("slider11").onchange = function () {
-        theta[middleLeg3Id] = event.srcElement.value;
-        initNodes(middleLeg3Id);
-    };
-    document.getElementById("slider12").onchange = function () {
-        theta[middleLeg4Id] = event.srcElement.value;
-        initNodes(middleLeg4Id);
-    };
-    document.getElementById("slider13").onchange = function () {
-        theta[middleLeg5Id] = event.srcElement.value;
-        initNodes(middleLeg5Id);
-    };
-    document.getElementById("slider14").onchange = function () {
-        theta[middleLeg6Id] = event.srcElement.value;
-        initNodes(middleLeg6Id);
-    };
-    document.getElementById("slider15").onchange = function () {
-        theta[middleLeg7Id] = event.srcElement.value;
-        initNodes(middleLeg7Id);
-    };
-    document.getElementById("slider16").onchange = function () {
-        theta[middleLeg8Id] = event.srcElement.value;
-        initNodes(middleLeg8Id);
-    };
-    document.getElementById("slider17").onchange = function () {
-        theta[lowerLeg1Id] = event.srcElement.value;
-        initNodes(lowerLeg1Id);
-    };
-    document.getElementById("slider18").onchange = function () {
-        theta[lowerLeg2Id] = event.srcElement.value;
-        initNodes(lowerLeg2Id);
-    };
-    document.getElementById("slider19").onchange = function () {
-        theta[lowerLeg3Id] = event.srcElement.value;
-        initNodes(lowerLeg3Id);
-    };
-    document.getElementById("slider20").onchange = function () {
-        theta[lowerLeg4Id] = event.srcElement.value;
-        initNodes(lowerLeg4Id);
-    };
-    document.getElementById("slider21").onchange = function () {
-        theta[lowerLeg5Id] = event.srcElement.value;
-        initNodes(lowerLeg5Id);
-    };
-    document.getElementById("slider22").onchange = function () {
-        theta[lowerLeg6Id] = event.srcElement.value;
-        initNodes(lowerLeg6Id);
-    };
-    document.getElementById("slider23").onchange = function () {
-        theta[lowerLeg7Id] = event.srcElement.value;
-        initNodes(lowerLeg7Id);
-    };
-    document.getElementById("slider24").onchange = function () {
-        theta[lowerLeg8Id] = event.srcElement.value;
-        initNodes(lowerLeg8Id);
-    }
+    { // sliders
 
+
+        document.getElementById("slider0").onchange = function () {
+            theta[headId] = event.srcElement.value;
+            initNodes(headId);
+        };
+        document.getElementById("slider1").onchange = function () {
+            theta[upperLeg1Id] = event.srcElement.value;
+            initNodes(upperLeg1Id);
+        };
+        document.getElementById("slider2").onchange = function () {
+            theta[upperLeg2Id] = event.srcElement.value;
+            initNodes(upperLeg2Id);
+        };
+        document.getElementById("slider3").onchange = function () {
+            theta[upperLeg3Id] = event.srcElement.value;
+            initNodes(upperLeg3Id);
+        };
+        document.getElementById("slider4").onchange = function () {
+            theta[upperLeg4Id] = event.srcElement.value;
+            initNodes(upperLeg4Id);
+        };
+        document.getElementById("slider5").onchange = function () {
+            theta[upperLeg5Id] = event.srcElement.value;
+            initNodes(upperLeg5Id);
+        };
+        document.getElementById("slider6").onchange = function () {
+            theta[upperLeg6Id] = event.srcElement.value;
+            initNodes(upperLeg6Id);
+        };
+        document.getElementById("slider7").onchange = function () {
+            theta[upperLeg7Id] = event.srcElement.value;
+            initNodes(upperLeg7Id);
+        };
+        document.getElementById("slider8").onchange = function () {
+            theta[upperLeg8Id] = event.srcElement.value;
+            initNodes(upperLeg8Id);
+        };
+        document.getElementById("slider9").onchange = function () {
+            theta[middleLeg1Id] = event.srcElement.value;
+            initNodes(middleLeg1Id);
+        };
+        document.getElementById("slider10").onchange = function () {
+            theta[middleLeg2Id] = event.srcElement.value;
+            initNodes(middleLeg2Id);
+        };
+        document.getElementById("slider11").onchange = function () {
+            theta[middleLeg3Id] = event.srcElement.value;
+            initNodes(middleLeg3Id);
+        };
+        document.getElementById("slider12").onchange = function () {
+            theta[middleLeg4Id] = event.srcElement.value;
+            initNodes(middleLeg4Id);
+        };
+        document.getElementById("slider13").onchange = function () {
+            theta[middleLeg5Id] = event.srcElement.value;
+            initNodes(middleLeg5Id);
+        };
+        document.getElementById("slider14").onchange = function () {
+            theta[middleLeg6Id] = event.srcElement.value;
+            initNodes(middleLeg6Id);
+        };
+        document.getElementById("slider15").onchange = function () {
+            theta[middleLeg7Id] = event.srcElement.value;
+            initNodes(middleLeg7Id);
+        };
+        document.getElementById("slider16").onchange = function () {
+            theta[middleLeg8Id] = event.srcElement.value;
+            initNodes(middleLeg8Id);
+        };
+        document.getElementById("slider17").onchange = function () {
+            theta[lowerLeg1Id] = event.srcElement.value;
+            initNodes(lowerLeg1Id);
+        };
+        document.getElementById("slider18").onchange = function () {
+            theta[lowerLeg2Id] = event.srcElement.value;
+            initNodes(lowerLeg2Id);
+        };
+        document.getElementById("slider19").onchange = function () {
+            theta[lowerLeg3Id] = event.srcElement.value;
+            initNodes(lowerLeg3Id);
+        };
+        document.getElementById("slider20").onchange = function () {
+            theta[lowerLeg4Id] = event.srcElement.value;
+            initNodes(lowerLeg4Id);
+        };
+        document.getElementById("slider21").onchange = function () {
+            theta[lowerLeg5Id] = event.srcElement.value;
+            initNodes(lowerLeg5Id);
+        };
+        document.getElementById("slider22").onchange = function () {
+            theta[lowerLeg6Id] = event.srcElement.value;
+            initNodes(lowerLeg6Id);
+        };
+        document.getElementById("slider23").onchange = function () {
+            theta[lowerLeg7Id] = event.srcElement.value;
+            initNodes(lowerLeg7Id);
+        };
+        document.getElementById("slider24").onchange = function () {
+            theta[lowerLeg8Id] = event.srcElement.value;
+            initNodes(lowerLeg8Id);
+        }
+    }
 
 
     for (i = 0; i < numNodes; i++) initNodes(i);
