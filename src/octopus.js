@@ -69,13 +69,13 @@ var lowerLeg8Id = 24;
 var headHeight = 5.0;
 var headWidth = 5.0;
 
-var upperLegWidth = 0.5;
+var upperLegWidth = 0.65;
 var upperLegHeight = 5.0;
 
-var middleLegWidth = 0.5;
+var middleLegWidth = 0.55;
 var middleLegHeight = 3.0;
 
-var lowerLegWidth = 0.5;
+var lowerLegWidth = 0.40;
 var lowerLegHeight = 2.0;
 
 var numNodes = 25;
@@ -93,6 +93,8 @@ var numVertices = 24;
 var stack = [];
 
 var figure = [];
+
+var savedThetas = [];
 
 for (var i = 0; i < numNodes; i++) figure[i] = createNode(null, null, null, null);
 
@@ -354,6 +356,24 @@ function cube() {
     quad(5, 4, 0, 1);
 }
 
+function saveTheta() { // saves the theta array to savedThetas array
+    savedThetas.push(theta.slice());
+    console.log("savedThetas", savedThetas);
+}
+
+function loadTheta() {
+    if (savedThetas.length > 0) {
+        theta = savedThetas.pop();
+        console.log("theta", theta);
+        console.log("savedThetas after pop: ", savedThetas);
+
+        // Update the figure with the loaded angles
+        for (var i = 0; i < numNodes; i++) {
+            initNodes(i);
+        }
+    }
+}
+
 
 window.onload = function init() {
 
@@ -394,110 +414,124 @@ window.onload = function init() {
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
 
-    { // sliders
+    { // sliders & buttons
 
+        document.getElementById("save-button").onclick = function () {
+            alert("Saved Theta Array!");
+            saveTheta();
+        };
+
+        document.getElementById("load-button").onclick = function () {
+            alert("Loaded Theta Array!");
+            loadTheta();
+
+            initNodes(headId);
+        };
 
         document.getElementById("slider0").onchange = function () {
-            theta[headId] = event.srcElement.value;
+            theta[headId] = parseInt(event.srcElement.value);
             initNodes(headId);
         };
         document.getElementById("slider1").onchange = function () {
-            theta[upperLeg1Id] = event.srcElement.value;
+            theta[upperLeg1Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg1Id);
         };
         document.getElementById("slider2").onchange = function () {
-            theta[upperLeg2Id] = event.srcElement.value;
+            theta[upperLeg2Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg2Id);
         };
         document.getElementById("slider3").onchange = function () {
-            theta[upperLeg3Id] = event.srcElement.value;
+            theta[upperLeg3Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg3Id);
         };
         document.getElementById("slider4").onchange = function () {
-            theta[upperLeg4Id] = event.srcElement.value;
+            theta[upperLeg4Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg4Id);
         };
         document.getElementById("slider5").onchange = function () {
-            theta[upperLeg5Id] = event.srcElement.value;
+            theta[upperLeg5Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg5Id);
         };
         document.getElementById("slider6").onchange = function () {
-            theta[upperLeg6Id] = event.srcElement.value;
+            theta[upperLeg6Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg6Id);
         };
         document.getElementById("slider7").onchange = function () {
-            theta[upperLeg7Id] = event.srcElement.value;
+            theta[upperLeg7Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg7Id);
         };
         document.getElementById("slider8").onchange = function () {
-            theta[upperLeg8Id] = event.srcElement.value;
+            theta[upperLeg8Id] = parseInt(event.srcElement.value);
             initNodes(upperLeg8Id);
         };
         document.getElementById("slider9").onchange = function () {
-            theta[middleLeg1Id] = event.srcElement.value;
+            theta[middleLeg1Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg1Id);
         };
         document.getElementById("slider10").onchange = function () {
-            theta[middleLeg2Id] = event.srcElement.value;
+            theta[middleLeg2Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg2Id);
         };
         document.getElementById("slider11").onchange = function () {
-            theta[middleLeg3Id] = event.srcElement.value;
+            theta[middleLeg3Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg3Id);
         };
         document.getElementById("slider12").onchange = function () {
-            theta[middleLeg4Id] = event.srcElement.value;
+            theta[middleLeg4Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg4Id);
         };
         document.getElementById("slider13").onchange = function () {
-            theta[middleLeg5Id] = event.srcElement.value;
+            theta[middleLeg5Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg5Id);
         };
         document.getElementById("slider14").onchange = function () {
-            theta[middleLeg6Id] = event.srcElement.value;
+            theta[middleLeg6Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg6Id);
         };
         document.getElementById("slider15").onchange = function () {
-            theta[middleLeg7Id] = event.srcElement.value;
+            theta[middleLeg7Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg7Id);
         };
         document.getElementById("slider16").onchange = function () {
-            theta[middleLeg8Id] = event.srcElement.value;
+            theta[middleLeg8Id] = parseInt(event.srcElement.value);
             initNodes(middleLeg8Id);
         };
         document.getElementById("slider17").onchange = function () {
-            theta[lowerLeg1Id] = event.srcElement.value;
+            theta[lowerLeg1Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg1Id);
         };
         document.getElementById("slider18").onchange = function () {
-            theta[lowerLeg2Id] = event.srcElement.value;
+            theta[lowerLeg2Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg2Id);
         };
         document.getElementById("slider19").onchange = function () {
-            theta[lowerLeg3Id] = event.srcElement.value;
+            theta[lowerLeg3Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg3Id);
         };
         document.getElementById("slider20").onchange = function () {
-            theta[lowerLeg4Id] = event.srcElement.value;
+            theta[lowerLeg4Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg4Id);
         };
         document.getElementById("slider21").onchange = function () {
-            theta[lowerLeg5Id] = event.srcElement.value;
+            theta[lowerLeg5Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg5Id);
         };
         document.getElementById("slider22").onchange = function () {
-            theta[lowerLeg6Id] = event.srcElement.value;
+            theta[lowerLeg6Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg6Id);
         };
         document.getElementById("slider23").onchange = function () {
-            theta[lowerLeg7Id] = event.srcElement.value;
+            theta[lowerLeg7Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg7Id);
         };
         document.getElementById("slider24").onchange = function () {
-            theta[lowerLeg8Id] = event.srcElement.value;
+            theta[lowerLeg8Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg8Id);
         }
     }
+
+    //button
+
 
 
     for (i = 0; i < numNodes; i++) initNodes(i);
