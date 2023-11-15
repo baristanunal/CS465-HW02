@@ -1,214 +1,214 @@
-<!--
-* Octopus HTML File for CS465, HW#02
-* Bilkent University
-* FALL 2023-2024
-*
-* @author  Mert Ünlü & Barış Tan Ünal
-* @version 1.1
-* @since   09-11-2023
--->
-
 <!DOCTYPE html>
 <html>
 
+<head>
+    <style>
+        /* Add some basic styling to create columns */
+        .slider-column {
+            float: left;
+            margin-right: 20px;
+        }
 
-<script id="vertex-shader" type="x-shader/x-vertex">
+        /* Style for the header */
+        .leg-header {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
 
-attribute  vec4 vPosition;
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        void main() {
+            gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+        }
+    </script>
 
-uniform mat4 modelViewMatrix;
-uniform mat4 projectionMatrix;
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        void main() {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        }
+    </script>
 
-void main() 
-{
-    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
-} 
-</script>
-
-<script id="fragment-shader" type="x-shader/x-fragment">
-
-precision mediump float;
-
-void main()
-{
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-
-}
-</script>
-
-
-
-<script type="text/javascript" src="../Common/webgl-utils.js"></script>
-<script type="text/javascript" src="../Common/InitShaders.js"></script>
-<script type="text/javascript" src="../Common/MV.js"></script>
-<script type="text/javascript" src="octopus.js"></script>
-
-<div id="slider0">
-head angle -180 <input id="slide" type="range"
- min="-180" max="180" step="10" value="0"
-  />
- 180
-</div><br/>
-<div id="slider1">
-    left upper leg 1 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider2">
-    left upper leg 2 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider3">
-    left upper leg 3 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider4">
-    left upper leg 4 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider5">
-    left upper leg 5 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180        
-</div><br/>
-<div id="slider6">
-    left upper leg 6 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider7">
-    left upper leg 7 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider8">
-    left upper leg 8 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
--->
-
-<div id="slider9">
-    left middle leg 1 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-
-
-
-
-<div id="slider10">
-    left middle leg 2 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider11">
-    left middle leg 3 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider12">
-    left middle leg 4 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider13">
-    left middle leg 5 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180        
-</div><br/>
-<div id="slider14">
-    left middle leg 6 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider15">
-    left middle leg 7 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider16">
-    left middle leg 8 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-
-
-<div id="slider17">
-    left lower leg 1 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-
-<div id="slider18">
-    left lower leg 2 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider19">
-    left lower leg 3 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider20">
-    left lower leg 4 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider21">
-    left lower leg 5 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180        
-</div><br/>
-<div id="slider22">
-    left lower leg 6 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider23">
-    left lower leg 7 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-<div id="slider24">
-    left lower leg 8 angle -180 <input id="slide" type="range"
-     min="-180" max="180" step="10" value="0"
-      />
-     180
-</div><br/>
-
+    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../Common/InitShaders.js"></script>
+    <script type="text/javascript" src="../Common/MV.js"></script>
+    <script type="text/javascript" src="octopus.js"></script>
+</head>
 
 <body>
-<canvas id="gl-canvas" width="512"" height="512"
-Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
-</body>
-</html>
-<html>
+    <div id="slider0">
+        <div class="leg-header">Head</div>
+        head angle -180
+        <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+        180
+    </div><br/>
 
+    <div class="slider-column">
+        <div class="leg-header">Leg 1</div>
+        <div id="slider1">
+            upper leg 1 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider9">
+            middle leg 1 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider17">
+            lower leg 1 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+
+
+
+        <div class="leg-header">Leg 2</div>
+        <div id="slider2">
+            upper leg 2 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider10">
+            middle leg 2 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider18">
+            lower leg 2 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+
+    </div>
+
+    
+
+    <div class="slider-column">
+        <div class="leg-header">Leg 3</div>
+        <div id="slider3">
+            upper leg 3 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider11">
+            middle leg 3 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider19">
+            lower leg 3 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+
+
+        <div class="leg-header">Leg 4</div>
+        <div id="slider4">
+            upper leg 4 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider12">
+            middle leg 4 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider20">
+            lower leg 4 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+    </div>
+
+    
+
+    <div class="slider-column">
+        <div class="leg-header">Leg 5</div>
+        <div id="slider5">
+            upper leg 5 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider13">
+            middle leg 5 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider21">
+            lower leg 5 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+
+
+        <div class="leg-header">Leg 6</div>
+        <div id="slider6">
+            upper leg 6 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider14">
+            middle leg 6 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider22">
+            lower leg 6 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+    </div>
+
+    <div class="slider-column">
+        
+    </div>
+
+    <div class="slider-column">
+        <div class="leg-header">Leg 7</div>
+        <div id="slider7">
+            upper leg 7 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider15">
+            middle leg 7 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider23">
+            lower leg 7 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+
+
+        <div class="leg-header">Leg 8</div>
+        <div id="slider8">
+            upper leg 8 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider16">
+            middle leg 8 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+        <div id="slider24">
+            lower leg 8 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br/>
+    </div>
+    
+
+    <canvas id="gl-canvas" width="512" height="512">
+        Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>
+</body>
+
+</html>
