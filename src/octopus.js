@@ -876,6 +876,7 @@ window.onload = function init() {
 var render = function () {
 
     gl.clear(gl.COLOR_BUFFER_BIT);
+
     traverse(headId);
     requestAnimFrame(render);
 }

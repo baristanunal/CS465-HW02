@@ -103,18 +103,11 @@
 
     <script id="fragment-shader" type="x-shader/x-fragment">
         precision mediump float;
-        void main() {
-            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        }
-    </script>
-
-    <script id="fragment-shader" type="x-shader/x-fragment">
-        precision mediump float;
         varying vec4 fColor;
         void main() {
             gl_FragColor = fColor;
         }
-        </script>
+    </script>
 
     <script type="text/javascript" src="../Common/webgl-utils.js"></script>
     <script type="text/javascript" src="../Common/InitShaders.js"></script>
@@ -254,6 +247,7 @@
     
     <div class="slider-column">
         <div id="slider25">
+            <div class="leg-header">Head</div>
             head position x -15
             <input id="slide" type="range" min="-15" max="15" step="1" value="0" />
             15
@@ -264,7 +258,6 @@
             15
         </div><br />
         <div id="slider0">
-            <div class="leg-header">Head</div>
             head angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
@@ -274,38 +267,38 @@
 
         <div class="leg-header">Leg 1</div>
         <div id="slider1">
-            upper 1 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 1 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider9">
-            middle 1 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 1 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider17">
-            lower 1 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 1 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
 
         <hr>
 
         <div class="leg-header">Leg 2</div>
         <div id="slider2">
-            upper 2 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 2 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider10">
-            middle 2 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 2 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider18">
-            lower 2 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 2 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
 
     </div>
@@ -313,55 +306,55 @@
     <div class="slider-column">
         <div class="leg-header">Leg 3</div>
         <div id="slider3">
-            upper 3 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 3 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider11">
-            middle 3 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 3 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider19">
-            lower 3 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 3 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
 
         <hr>
         <div class="leg-header">Leg 4</div>
         <div id="slider4">
-            upper 4 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 4 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider12">
-            middle 4 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 4 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider20">
-            lower 4 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 4 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <hr>
 
         <div class="leg-header">Leg 5</div>
         <div id="slider5">
-            upper 5 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 5 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider13">
-            middle 5 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 5 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider21">
-            lower 5 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 5 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
     </div>
 
@@ -370,55 +363,55 @@
 
         <div class="leg-header">Leg 6</div>
         <div id="slider6">
-            upper 6 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 6 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider14">
-            middle 6 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 6 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider22">
-            lower 6 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 6 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
 
         <hr>
         <div class="leg-header">Leg 7</div>
         <div id="slider7">
-            upper 7 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 7 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider15">
-            middle 7 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 7 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider23">
-            lower 7 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 7 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
 
         <hr>
         <div class="leg-header">Leg 8</div>
         <div id="slider8">
-            upper 8 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
-            180
+            upper 8 angle 130
+            <input id="slide" type="range" min="130" max="330" step="10" value="180" />
+            330
         </div><br />
         <div id="slider16">
-            middle 8 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            middle 8 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
         <div id="slider24">
-            lower 8 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
+            lower 8 angle -120
+            <input id="slide" type="range" min="-120" max="120" step="10" value="0" />
+            120
         </div><br />
 
     </div>
