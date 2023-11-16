@@ -124,6 +124,7 @@ var animationState = {
 };
 
 var savedAnimations = [];
+var framesPerSecondFromHTML = 60;
 
 for (var i = 0; i < numNodes; i++) figure[i] = createNode(null, null, null, null);
 
@@ -418,7 +419,7 @@ function startAnimation() {
 
     //animation will have 60 frames per second
     var frameCounter = 0;
-    var framesPerSecond = 60;
+    var framesPerSecond = framesPerSecondFromHTML;
     var frameDuration = 1000 / framesPerSecond; // in milliseconds
     var keyFrameAmount = savedThetas.length;
     var framesPerKeyFrame = animationDuration * framesPerSecond / (keyFrameAmount - 1);
@@ -513,6 +514,7 @@ function startAnimation() {
 
     // Function to pause the animation
     function pauseAnimation() {
+        //frameCounter = 0;
         isPaused = true;
         clearInterval(animation);
     }
@@ -534,6 +536,7 @@ function startAnimation() {
     }
 
 }
+
 
 function saveThetasToFile() {
     var a = document.createElement("a");
@@ -562,6 +565,11 @@ function loadThetasFromFile() {
         }
     }
 
+}
+
+function updateRate(value) {
+    framesPerSecond = value;
+    console.log(framesPerSecond + " frames per second");
 }
 
 function addAnimation() {
@@ -693,6 +701,11 @@ window.onload = function init() {
     gl.enableVertexAttribArray(vPosition);
 
     { // sliders & buttons
+
+        document.getElementById("hz-selector").onclick = function () {
+            framesPerSecondFromHTML = parseInt(event.srcElement.value);
+            console.log("framesPerSecondFromHTML", framesPerSecondFromHTML);
+        };
 
         document.getElementById("animation-duration").onchange = function () {
             animationDuration = parseInt(event.srcElement.value);
