@@ -686,10 +686,6 @@ window.onload = function init() {
         }
     }
 
-    //button
-
-
-
     for (i = 0; i < numNodes; i++) initNodes(i);
 
     render();
