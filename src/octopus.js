@@ -53,6 +53,7 @@ var ambientColor, diffuseColor, specularColor;
 //the octopus have 25 components in total
 
 var headId = 0;
+
 var upperLeg1Id = 1;
 var upperLeg2Id = 2;
 var upperLeg3Id = 3;
@@ -80,6 +81,8 @@ var lowerLeg6Id = 22;
 var lowerLeg7Id = 23;
 var lowerLeg8Id = 24;
 
+var headZId = 25;
+
 var headHeight = 8.0;
 var headWidth = 5.0;
 
@@ -92,8 +95,8 @@ var middleLegHeight = 3.0;
 var lowerLegWidth = 0.40;
 var lowerLegHeight = 2.0;
 
-var numNodes = 25;
-var numAngles = 24;
+var numNodes = 26;
+var numAngles = 26;
 var angle = 0;
 
 var animationDuration = 1; // in seconds
@@ -104,7 +107,7 @@ var headPosition = [0, 0, 0]
 //theta is the angle of rotation for each node 
 var theta = [0, 180, 180, 180, 180, 180, 180, 180, 180, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0];
+    0, 0, 0, 0, 0, 0];
 
 var numVertices = 24;
 
@@ -166,11 +169,14 @@ function initNodes(Id) {
     switch (Id) {
 
         case headId:
+        case headZId:
 
             m = translate(headPosition[0], headPosition[1], headPosition[2]);
             m = mult(m, rotate(theta[headId], 0, 1, 0));
+            m = mult(m, rotate(theta[headZId], 1, 0, 0));
             figure[headId] = createNode(m, head, null, upperLeg1Id);
             break;
+
 
         case upperLeg1Id:
             m = translate(2 * headWidth / 5, upperLegHeight * 0.1, 2);
@@ -920,6 +926,11 @@ window.onload = function init() {
         }
         document.getElementById("slider26").onchange = function () {
             headPosition[1] = parseInt(event.srcElement.value);
+            initNodes(headId);
+        }
+
+        document.getElementById("slider-head-z").onchange = function () {
+            theta[headZId] = parseInt(event.srcElement.value);
             initNodes(headId);
         }
     }
