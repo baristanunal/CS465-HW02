@@ -403,6 +403,13 @@ function startAnimation() {
     //call requestAnimationFrame() to animate the octopus every frameDuration milliseconds
     var animation = setInterval(function () {
 
+        //stop the animation if savedThetas array is empty
+        if (savedThetas.length == 0) {
+            clearInterval(animation);
+            alert("No saved keyframes!");
+            return;
+        }
+
         var index = Math.floor(frameCounter / framesPerKeyFrame);    //determine the current theta array
         theta = savedThetas[index];
 
@@ -596,10 +603,7 @@ window.onload = function init() {
 
 
         document.getElementById("reset-button").onclick = function () {
-            alert("Reset Theta Array!");
-            theta = [0, 180, 180, 180, 180, 180, 180, 180, 180, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0];
+            savedThetas = [];
         }
 
         document.getElementById("slider0").onchange = function () {
