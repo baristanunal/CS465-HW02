@@ -202,11 +202,6 @@
             </div>
         </div>
 
-        
-
-        
-
-
     </div>
 
     
@@ -371,11 +366,21 @@
 
     </div>
 
-
-
-
-
-
+    <div class="slider-column">
+        
+        <div class="leg-header">Animation Speed</div>
+        <div id="hz-selector">
+            <label for="hz">Select Animation Speed:</label>
+            <input type="range" id="hz" name="hz" min="10" max="120" step="10" value="60" oninput="updateSelectedValue(this.value)">
+            <div id="selected-hz-value">Selected Value: 60 Hz (default)</div>
+        </div>
+    </div>
+    
+    <script>
+        function updateSelectedValue(value) {
+            document.getElementById("selected-hz-value").innerText = "Selected Value: " + value + " Hz";            
+        }
+    </script>
 </body>
 
 </html>
