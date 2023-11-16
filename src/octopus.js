@@ -85,6 +85,8 @@ var angle = 0;
 var animationDuration = 1; // in seconds
 
 
+
+
 //theta is the angle of rotation for each node 
 var theta = [0, 180, 180, 180, 180, 180, 180, 180, 180, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -97,6 +99,15 @@ var stack = [];
 var figure = [];
 
 var savedThetas = [];
+
+var animationState = {
+    frameCounter: 0,
+    framesPerSecond: 60,
+    frameDuration: 1000 / 60,
+    keyFrameAmount: 0,
+    framesPerKeyFrame: 0,
+    angleDifferences: [],
+};
 
 var savedAnimations = [];
 
@@ -381,12 +392,26 @@ function loadTheta() { // loads the last saved theta array from savedThetas arra
 //this function will use the savedthetas array to animate the octopus while also using the animation duration
 function startAnimation() {
 
+    console.log("startAnimation triggered in octopus.js");
+
+    // deep copy savedThetas array for later use
+    var savedThetasCopy = JSON.parse(JSON.stringify(savedThetas));
+    console.log("savedThetasCopy", savedThetasCopy);
+
     //animation will have 60 frames per second
     var frameCounter = 0;
     var framesPerSecond = 60;
     var frameDuration = 1000 / framesPerSecond; // in milliseconds
     var keyFrameAmount = savedThetas.length;
     var framesPerKeyFrame = animationDuration * framesPerSecond / (keyFrameAmount - 1);
+
+
+    //set the state of the animation    
+    animationState.framesPerSecond = framesPerSecond;
+    animationState.frameDuration = frameDuration;
+    animationState.keyFrameAmount = keyFrameAmount;
+    animationState.framesPerKeyFrame = framesPerKeyFrame;
+
 
     //compute the angle differences between each keyframe
     var angleDifferences = [];
@@ -398,19 +423,37 @@ function startAnimation() {
     }
 
     console.log("angleDifferences", angleDifferences);
+    console.log("theta here: ", theta);
+    animationState.angleDifferences = angleDifferences.slice();
 
+    //set theta to the first keyframe
+    theta = JSON.parse(JSON.stringify(savedThetas[0]));
+    console.log("theta here2: ", theta);
 
     //call requestAnimationFrame() to animate the octopus every frameDuration milliseconds
     var animation = setInterval(function () {
+
+        console.log("frameCounter", frameCounter);
 
         //stop the animation if savedThetas array is empty
         if (savedThetas.length == 0) {
             clearInterval(animation);
             alert("No saved keyframes!");
+
+            // clear the variables            
+            theta = [];
+            angleDifferences = [];
+            frameCounter = 0;
+
+            //set savedTheta to the copy of the original savedThetas array
+            savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+
             return;
         }
 
         var index = Math.floor(frameCounter / framesPerKeyFrame);    //determine the current theta array
+
+        //shallow copy the inside of the array
         theta = savedThetas[index];
 
         // update the theta array with the new angles
@@ -427,13 +470,26 @@ function startAnimation() {
 
         // stop the animation when the last keyframe is reached
         if (frameCounter >= (keyFrameAmount - 1) * framesPerKeyFrame) {
+
+            // clear the variables            
+            theta = [];
+            angleDifferences = [];
+            frameCounter = 0;
+
+            //set savedTheta to the copy of the original savedThetas array
+            savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+
             clearInterval(animation);
         }
 
         //call render() to draw the octopus
-        requestAnimationFrame(render);
+        //requestAnimationFrame(render);
+
 
     }, frameDuration);
+
+    //set savedTheta to the copy of the original savedThetas array
+    savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
 
 }
 
@@ -521,6 +577,25 @@ function generateRandomAnimation() {
     console.log("savedThetas", savedThetas);
 }
 
+
+
+// Function to pause the animation
+function pauseAnimation() {
+    // Stop the current animation interval
+    clearInterval(animation);
+}
+
+// Function to resume the animation
+function resumeAnimation() {
+    // Start a new animation interval with the stored state
+    animation = setInterval(function () {
+        // ... (unchanged code)
+    }, animationState.frameDuration);
+}
+
+
+
+
 window.onload = function init() {
 
     canvas = document.getElementById("gl-canvas");
@@ -581,6 +656,14 @@ window.onload = function init() {
         document.getElementById("start-animation-button").onclick = function () {
             alert("Started Animation!");
             startAnimation();
+        };
+
+        document.getElementById("pause-animation-button").onclick = function () {
+            pauseAnimation();
+        };
+
+        document.getElementById("resume-animation-button").onclick = function () {
+            resumeAnimation();
         };
 
         document.getElementById("save-animation-button").onclick = function () {
