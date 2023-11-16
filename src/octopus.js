@@ -489,6 +489,16 @@ function getSavedAnimations() {
     return savedAnimations;
 }
 
+function updateSelectedSavedAnimation(id) {
+    // Update the theta array with the selected animation
+    console.log("updateSelectedSavedAnimation triggered in octopus.js");
+    //iterate Through savedAnimations array and find the selected animation, assign it to savedThetas
+    for (var i = 0; i < savedAnimations.length; i++) {
+        if (savedAnimations[i].name == id) {
+            savedThetas = savedAnimations[i].thetas;
+        }
+    }
+}
 
 window.onload = function init() {
 

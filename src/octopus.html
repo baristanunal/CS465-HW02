@@ -96,6 +96,7 @@
                         var listItem = document.createElement('div');
                         // Add a class to the div
                         listItem.classList.add('saved-animation-item');
+                        listItem.id = animation.name;
 
                         // Set text content
                         listItem.textContent = animation.name;
@@ -104,7 +105,9 @@
                         listItem.style.cursor = 'pointer';
                         listItem.onclick = function () {
                             // Handle the click event, you can replace this with your own logic
-                            console.log('Clicked on:', animation.name);
+                            console.log('Clicked on:', listItem.id);
+                            updateSelectedSavedAnimation(listItem.id)
+
                         };
 
                         // Append the div to the container
