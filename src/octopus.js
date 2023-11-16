@@ -34,6 +34,20 @@ var vertices = [
 
 ];
 
+// shader variables
+
+var lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
+var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
+var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
+var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
+
+var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
+var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
+var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+var materialShininess = 100.0;
+
+var ctm;
+var ambientColor, diffuseColor, specularColor;
 
 //components for an octopus which has a head and 8 legs which has 3 parts each: upper, middle, lower.
 //the octopus have 25 components in total
@@ -85,7 +99,7 @@ var angle = 0;
 var animationDuration = 1; // in seconds
 
 
-
+var headPosition = [0, 0, 0]
 
 //theta is the angle of rotation for each node 
 var theta = [0, 180, 180, 180, 180, 180, 180, 180, 180, 0,
@@ -152,7 +166,8 @@ function initNodes(Id) {
 
         case headId:
 
-            m = rotate(theta[headId], 0, 1, 0);
+            m = translate(headPosition[0], headPosition[1], headPosition[2]);
+            m = mult(m, rotate(theta[headId], 0, 1, 0));
             figure[headId] = createNode(m, head, null, upperLeg1Id);
             break;
 
@@ -638,6 +653,8 @@ window.onload = function init() {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
+    gl.enable(gl.DEPTH_TEST);
+
     //
     //  Load shaders and initialize attribute buffers
     //
@@ -645,11 +662,28 @@ window.onload = function init() {
 
     gl.useProgram(program);
 
+    ambientProduct = mult(lightAmbient, materialAmbient);
+    diffuseProduct = mult(lightDiffuse, materialDiffuse);
+    specularProduct = mult(lightSpecular, materialSpecular);
+
+    viewerPos = vec3(0.0, 0.0, -20.0 );
+
     instanceMatrix = mat4();
 
     projectionMatrix = ortho(-15.0, 15.0, -15.0, 15.0, -15.0, 15.0);
     modelViewMatrix = mat4();
 
+    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),
+       flatten(ambientProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),
+       flatten(diffuseProduct) );
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), 
+       flatten(specularProduct) );	
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), 
+       flatten(lightPosition) );
+       
+    gl.uniform1f(gl.getUniformLocation(program, 
+       "shininess"),materialShininess);
 
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelViewMatrix"), false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "projectionMatrix"), false, flatten(projectionMatrix));
@@ -822,10 +856,20 @@ window.onload = function init() {
             theta[lowerLeg8Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg8Id);
         }
+        document.getElementById("slider25").onchange = function () {
+            headPosition[0] = parseInt(event.srcElement.value);
+            initNodes(headId);
+        }
+        document.getElementById("slider26").onchange = function () {   
+            headPosition[1] = parseInt(event.srcElement.value);
+            initNodes(headId);
+        }
     }
 
-    for (i = 0; i < numNodes; i++) initNodes(i);
-
+    for (i = 0; i < numNodes; i++) {
+        initNodes(i);
+    }
+    
     render();
 }
 
