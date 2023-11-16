@@ -460,8 +460,33 @@ function loadThetasFromFile() {
 }
 
 function addAnimation() {
-    savedAnimations.push(savedThetas.slice());
+    // Ask for animation name
+    var animationName = prompt("Please enter the name of the animation", "Animation Name");
+
+    // Construct the animation object
+    var animation = {
+        name: animationName,
+        thetas: savedThetas.slice()
+    };
+
+    // Add the animation to the savedAnimations array
+    savedAnimations.push(animation);
+
     console.log("savedAnimations", savedAnimations);
+
+    // Trigger the event to notify of the array change
+    triggerArrayChange();
+}
+
+function triggerArrayChange() {
+    console.log("triggerArrayChange triggered in octopus.js");
+    var event = new Event('savedAnimationsChanged');
+    document.dispatchEvent(event);
+}
+
+
+function getSavedAnimations() {
+    return savedAnimations;
 }
 
 
