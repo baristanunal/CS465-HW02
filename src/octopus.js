@@ -36,14 +36,14 @@ var vertices = [
 
 // shader variables
 
-var lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
-var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
-var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
-var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
+var lightPosition = vec4(1.0, 1.0, 1.0, 0.0);
+var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
+var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 
-var materialAmbient = vec4( 1.0, 0.0, 1.0, 1.0 );
-var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0);
-var materialSpecular = vec4( 1.0, 0.8, 0.0, 1.0 );
+var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
+var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
+var materialSpecular = vec4(1.0, 0.8, 0.0, 1.0);
 var materialShininess = 100.0;
 
 var ctm;
@@ -113,6 +113,7 @@ var stack = [];
 var figure = [];
 
 var savedThetas = [];
+var savedHeadPositions = [];
 
 var animationState = {
     frameCounter: 0,
@@ -389,7 +390,9 @@ function cube() {
 
 function saveTheta() { // saves the theta array to savedThetas array
     savedThetas.push(theta.slice());
+    savedHeadPositions.push(headPosition.slice());
     console.log("savedThetas", savedThetas);
+    console.log("savedHeadPositions", savedHeadPositions);
 }
 
 function loadTheta() { // loads the last saved theta array from savedThetas array
@@ -397,6 +400,10 @@ function loadTheta() { // loads the last saved theta array from savedThetas arra
         theta = savedThetas.pop();
         console.log("theta", theta);
         console.log("savedThetas after pop: ", savedThetas);
+
+        headPosition = savedHeadPositions.pop();
+        console.log("headPosition", headPosition);
+        console.log("savedHeadPositions after pop: ", savedHeadPositions);
 
         // Update the figure with the loaded angles
         for (var i = 0; i < numNodes; i++) {
@@ -415,6 +422,7 @@ function startAnimation() {
 
     // deep copy savedThetas array for later use
     var savedThetasCopy = JSON.parse(JSON.stringify(savedThetas));
+    var savedHeadPositionsCopy = JSON.parse(JSON.stringify(savedHeadPositions));
     console.log("savedThetasCopy", savedThetasCopy);
 
     //animation will have 60 frames per second
@@ -441,13 +449,27 @@ function startAnimation() {
         }
     }
 
+    //compute position differences between each keyframe for the head
+    var headPositionDifferences = [];
+    for (var i = 0; i < keyFrameAmount - 1; i++) {
+        headPositionDifferences.push([]);
+        for (var j = 0; j < 3; j++) {
+            headPositionDifferences[i].push(savedHeadPositions[i + 1][j] - savedHeadPositions[i][j]);
+        }
+    }
+
+
     console.log("angleDifferences", angleDifferences);
+    console.log("headPositionDifferences", headPositionDifferences);
+
     console.log("theta here: ", theta);
     animationState.angleDifferences = angleDifferences.slice();
 
     //set theta to the first keyframe
     theta = JSON.parse(JSON.stringify(savedThetas[0]));
+    headPosition = JSON.parse(JSON.stringify(savedHeadPositions[0]));
     console.log("theta here2: ", theta);
+    console.log("savedThetas[0]", headPosition);
 
     //call requestAnimationFrame() to animate the octopus every frameDuration milliseconds
     var animation = setInterval(function () {
@@ -467,10 +489,13 @@ function startAnimation() {
             // clear the variables            
             theta = [];
             angleDifferences = [];
+            headPosition = [];
+            headPositionDifferences = [];
             frameCounter = 0;
 
             //set savedTheta to the copy of the original savedThetas array
             savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+            savedHeadPositions = JSON.parse(JSON.stringify(savedHeadPositionsCopy));
 
             return;
         }
@@ -479,10 +504,16 @@ function startAnimation() {
 
         //shallow copy the inside of the array
         theta = savedThetas[index];
+        headPosition = savedHeadPositions[index];
 
         // update the theta array with the new angles
         for (var j = 0; j < numAngles; j++) {
             theta[j] += angleDifferences[index][j] / ((animationDuration / (keyFrameAmount - 1)) * framesPerSecond);
+        }
+
+        // update the head position with the new position
+        for (var j = 0; j < 3; j++) {
+            headPosition[j] += headPositionDifferences[index][j] / ((animationDuration / (keyFrameAmount - 1)) * framesPerSecond);
         }
 
         frameCounter++;
@@ -497,11 +528,13 @@ function startAnimation() {
 
             // clear the variables            
             theta = [];
+            headPosition = [];
             angleDifferences = [];
             frameCounter = 0;
 
             //set savedTheta to the copy of the original savedThetas array
             savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+            savedHeadPositions = JSON.parse(JSON.stringify(savedHeadPositionsCopy));
 
             clearInterval(animation);
         }
@@ -511,6 +544,7 @@ function startAnimation() {
 
     //set savedTheta to the copy of the original savedThetas array
     savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+    savedHeadPositions = JSON.parse(JSON.stringify(savedHeadPositionsCopy));
 
     // Function to pause the animation
     function pauseAnimation() {
@@ -560,8 +594,10 @@ function loadThetasFromFile() {
         reader.readAsText(file, 'UTF-8');
         reader.onload = function (evt) {
             var fileContents = evt.target.result;
-            savedThetas = JSON.parse(fileContents);
-            console.log("savedThetas", savedThetas);
+            savedThetas = JSON.parse(fileContents.thetas);
+            savedHeadPositions = JSON.parse(fileContents.headPositions);
+            console.log("loaded savedThetas", savedThetas);
+            console.log("loaded savedHeadPositions", savedHeadPositions);
         }
     }
 
@@ -579,11 +615,13 @@ function addAnimation() {
     // Construct the animation object
     var animation = {
         name: animationName,
-        thetas: savedThetas.slice()
+        thetas: savedThetas.slice(),
+        headPositions: savedHeadPositions.slice()
     };
 
     // Add the animation to the savedAnimations array
     savedAnimations.push(animation);
+
 
     console.log("savedAnimations", savedAnimations);
 
@@ -609,6 +647,7 @@ function updateSelectedSavedAnimation(id) {
     for (var i = 0; i < savedAnimations.length; i++) {
         if (savedAnimations[i].name == id) {
             savedThetas = savedAnimations[i].thetas;
+            savedHeadPositions = savedAnimations[i].headPositions;
         }
     }
 }
@@ -666,7 +705,7 @@ window.onload = function init() {
     diffuseProduct = mult(lightDiffuse, materialDiffuse);
     specularProduct = mult(lightSpecular, materialSpecular);
 
-    viewerPos = vec3(0.0, 0.0, -20.0 );
+    viewerPos = vec3(0.0, 0.0, -20.0);
 
     instanceMatrix = mat4();
 
@@ -674,16 +713,16 @@ window.onload = function init() {
     modelViewMatrix = mat4();
 
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),
-       flatten(ambientProduct));
+        flatten(ambientProduct));
     gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),
-       flatten(diffuseProduct) );
-    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), 
-       flatten(specularProduct) );	
-    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), 
-       flatten(lightPosition) );
-       
-    gl.uniform1f(gl.getUniformLocation(program, 
-       "shininess"),materialShininess);
+        flatten(diffuseProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"),
+        flatten(specularProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"),
+        flatten(lightPosition));
+
+    gl.uniform1f(gl.getUniformLocation(program,
+        "shininess"), materialShininess);
 
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "modelViewMatrix"), false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "projectionMatrix"), false, flatten(projectionMatrix));
@@ -860,7 +899,7 @@ window.onload = function init() {
             headPosition[0] = parseInt(event.srcElement.value);
             initNodes(headId);
         }
-        document.getElementById("slider26").onchange = function () {   
+        document.getElementById("slider26").onchange = function () {
             headPosition[1] = parseInt(event.srcElement.value);
             initNodes(headId);
         }
@@ -869,7 +908,7 @@ window.onload = function init() {
     for (i = 0; i < numNodes; i++) {
         initNodes(i);
     }
-    
+
     render();
 }
 
