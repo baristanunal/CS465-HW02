@@ -572,36 +572,49 @@ function startAnimation() {
 }
 
 
-function saveThetasToFile() {
+function saveThetasToFile() { // save thetas and headPositions arrays to a file
     var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(savedThetas)], { type: 'text/plain' });
+    var file = new Blob([JSON.stringify({ thetas: savedThetas, headPositions: savedHeadPositions })], { type: 'text/plain' });
     a.href = URL.createObjectURL(file);
-    a.download = 'savedThetas.txt';
+    a.download = 'savedAnimation.txt';
     a.click();
 }
 
-//this function opens the file selector and loads the savedThetas array from the selected file
-function loadThetasFromFile() {
 
+
+// This function opens the file selector and loads the content from the selected file
+function loadThetasFromFile() {
     var fileSelector = document.createElement('input');
     fileSelector.type = 'file';
-    fileSelector.accept = 'text/plain';
+    fileSelector.accept = 'text/plain'; // Accept text files
     fileSelector.click();
 
     fileSelector.onchange = function () {
         var file = fileSelector.files[0];
         var reader = new FileReader();
+
         reader.readAsText(file, 'UTF-8');
         reader.onload = function (evt) {
             var fileContents = evt.target.result;
-            savedThetas = JSON.parse(fileContents.thetas);
-            savedHeadPositions = JSON.parse(fileContents.headPositions);
-            console.log("loaded savedThetas", savedThetas);
-            console.log("loaded savedHeadPositions", savedHeadPositions);
-        }
-    }
 
+            // Assuming the content is a JSON-like array structure
+            try {
+                var dataArray = JSON.parse(fileContents);
+                console.log("dataArray", dataArray);
+
+                // Assuming the structure of your JSON-like array is an array with two sub-arrays
+                savedThetas = dataArray["thetas"];
+                savedHeadPositions = dataArray["headPositions"];
+
+                console.log("loaded savedThetas", savedThetas);
+                console.log("loaded savedHeadPositions", savedHeadPositions);
+            } catch (error) {
+                console.error("Error parsing JSON-like content:", error);
+            }
+        };
+    };
 }
+
 
 function updateRate(value) {
     framesPerSecond = value;
@@ -656,11 +669,17 @@ function generateRandomAnimation() {
 
     //generate random savedThetas, between 2-10 arrays. Every theta value between -180 to 180
     savedThetas = [];
+    savedHeadPositions = [];
     var keyFrameAmount = Math.floor(Math.random() * 9) + 2;
     for (var i = 0; i < keyFrameAmount; i++) {
         savedThetas.push([]);
         for (var j = 0; j < numNodes; j++) {
             savedThetas[i].push(Math.floor(Math.random() * 361) - 180);
+        }
+
+        savedHeadPositions.push([]);
+        for (var j = 0; j < 3; j++) {
+            savedHeadPositions[i].push(Math.floor(Math.random() * 21) - 10);
         }
     }
     console.log("savedThetas", savedThetas);
