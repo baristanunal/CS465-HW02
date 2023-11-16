@@ -80,21 +80,25 @@ var lowerLeg6Id = 22;
 var lowerLeg7Id = 23;
 var lowerLeg8Id = 24;
 
-var headHeight = 5.0;
+var headHeight = 8.0;
 var headWidth = 5.0;
 
-var upperLegWidth = 0.5;
+var upperLegWidth = 0.65;
 var upperLegHeight = 5.0;
 
-var middleLegWidth = 0.5;
+var middleLegWidth = 0.55;
 var middleLegHeight = 3.0;
 
-var lowerLegWidth = 0.5;
+var lowerLegWidth = 0.40;
 var lowerLegHeight = 2.0;
 
 var numNodes = 25;
 var numAngles = 24;
 var angle = 0;
+
+var animationDuration = 1; // in seconds
+
+
 
 
 //theta is the angle of rotation for each node 
@@ -107,6 +111,19 @@ var numVertices = 24;
 var stack = [];
 
 var figure = [];
+
+var savedThetas = [];
+
+var animationState = {
+    frameCounter: 0,
+    framesPerSecond: 60,
+    frameDuration: 1000 / 60,
+    keyFrameAmount: 0,
+    framesPerKeyFrame: 0,
+    angleDifferences: [],
+};
+
+var savedAnimations = [];
 
 for (var i = 0; i < numNodes; i++) figure[i] = createNode(null, null, null, null);
 
@@ -368,6 +385,253 @@ function cube() {
     quad(5, 4, 0, 1);
 }
 
+function saveTheta() { // saves the theta array to savedThetas array
+    savedThetas.push(theta.slice());
+    console.log("savedThetas", savedThetas);
+}
+
+function loadTheta() { // loads the last saved theta array from savedThetas array
+    if (savedThetas.length > 0) {
+        theta = savedThetas.pop();
+        console.log("theta", theta);
+        console.log("savedThetas after pop: ", savedThetas);
+
+        // Update the figure with the loaded angles
+        for (var i = 0; i < numNodes; i++) {
+            initNodes(i);
+        }
+    }
+}
+
+var isPaused = false;
+
+//this function will use the savedthetas array to animate the octopus while also using the animation duration
+function startAnimation() {
+    isPaused = false;
+
+    console.log("startAnimation triggered in octopus.js");
+
+    // deep copy savedThetas array for later use
+    var savedThetasCopy = JSON.parse(JSON.stringify(savedThetas));
+    console.log("savedThetasCopy", savedThetasCopy);
+
+    //animation will have 60 frames per second
+    var frameCounter = 0;
+    var framesPerSecond = 60;
+    var frameDuration = 1000 / framesPerSecond; // in milliseconds
+    var keyFrameAmount = savedThetas.length;
+    var framesPerKeyFrame = animationDuration * framesPerSecond / (keyFrameAmount - 1);
+
+
+    //set the state of the animation    
+    animationState.framesPerSecond = framesPerSecond;
+    animationState.frameDuration = frameDuration;
+    animationState.keyFrameAmount = keyFrameAmount;
+    animationState.framesPerKeyFrame = framesPerKeyFrame;
+
+
+    //compute the angle differences between each keyframe
+    var angleDifferences = [];
+    for (var i = 0; i < keyFrameAmount - 1; i++) {
+        angleDifferences.push([]);
+        for (var j = 0; j < numNodes; j++) {
+            angleDifferences[i].push(savedThetas[i + 1][j] - savedThetas[i][j]);
+        }
+    }
+
+    console.log("angleDifferences", angleDifferences);
+    console.log("theta here: ", theta);
+    animationState.angleDifferences = angleDifferences.slice();
+
+    //set theta to the first keyframe
+    theta = JSON.parse(JSON.stringify(savedThetas[0]));
+    console.log("theta here2: ", theta);
+
+    //call requestAnimationFrame() to animate the octopus every frameDuration milliseconds
+    var animation = setInterval(function () {
+
+        if (isPaused) {
+            savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+            return;
+        }
+
+        console.log("frameCounter", frameCounter);
+
+        //stop the animation if savedThetas array is empty
+        if (savedThetas.length == 0) {
+            clearInterval(animation);
+            alert("No saved keyframes!");
+
+            // clear the variables            
+            theta = [];
+            angleDifferences = [];
+            frameCounter = 0;
+
+            //set savedTheta to the copy of the original savedThetas array
+            savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+
+            return;
+        }
+
+        var index = Math.floor(frameCounter / framesPerKeyFrame);    //determine the current theta array
+
+        //shallow copy the inside of the array
+        theta = savedThetas[index];
+
+        // update the theta array with the new angles
+        for (var j = 0; j < numAngles; j++) {
+            theta[j] += angleDifferences[index][j] / ((animationDuration / (keyFrameAmount - 1)) * framesPerSecond);
+        }
+
+        frameCounter++;
+
+        // update the figure with the new angles
+        for (var j = 0; j < numNodes; j++) {
+            initNodes(j);
+        }
+
+        // stop the animation when the last keyframe is reached
+        if (frameCounter >= (keyFrameAmount - 1) * framesPerKeyFrame) {
+
+            // clear the variables            
+            theta = [];
+            angleDifferences = [];
+            frameCounter = 0;
+
+            //set savedTheta to the copy of the original savedThetas array
+            savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+
+            clearInterval(animation);
+        }
+
+
+    }, frameDuration);
+
+    //set savedTheta to the copy of the original savedThetas array
+    savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+
+    // Function to pause the animation
+    function pauseAnimation() {
+        isPaused = true;
+        clearInterval(animation);
+    }
+
+    // Function to resume the animation
+    function resumeAnimation() {
+        isPaused = false;
+        // Restart the animation interval
+        animation = setInterval(/* your animation logic */);
+    }
+
+    // Function to toggle between pause and resume
+    function togglePauseResume() {
+        if (isPaused) {
+            resumeAnimation();
+        } else {
+            pauseAnimation();
+        }
+    }
+
+}
+
+function saveThetasToFile() {
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(savedThetas)], { type: 'text/plain' });
+    a.href = URL.createObjectURL(file);
+    a.download = 'savedThetas.txt';
+    a.click();
+}
+
+//this function opens the file selector and loads the savedThetas array from the selected file
+function loadThetasFromFile() {
+
+    var fileSelector = document.createElement('input');
+    fileSelector.type = 'file';
+    fileSelector.accept = 'text/plain';
+    fileSelector.click();
+
+    fileSelector.onchange = function () {
+        var file = fileSelector.files[0];
+        var reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        reader.onload = function (evt) {
+            var fileContents = evt.target.result;
+            savedThetas = JSON.parse(fileContents);
+            console.log("savedThetas", savedThetas);
+        }
+    }
+
+}
+
+function addAnimation() {
+    // Ask for animation name
+    var animationName = prompt("Please enter the name of the animation", "Animation Name");
+
+    // Construct the animation object
+    var animation = {
+        name: animationName,
+        thetas: savedThetas.slice()
+    };
+
+    // Add the animation to the savedAnimations array
+    savedAnimations.push(animation);
+
+    console.log("savedAnimations", savedAnimations);
+
+    // Trigger the event to notify of the array change
+    triggerArrayChange();
+}
+
+function triggerArrayChange() {
+    console.log("triggerArrayChange triggered in octopus.js");
+    var event = new Event('savedAnimationsChanged');
+    document.dispatchEvent(event);
+}
+
+
+function getSavedAnimations() {
+    return savedAnimations;
+}
+
+function updateSelectedSavedAnimation(id) {
+    // Update the theta array with the selected animation
+    console.log("updateSelectedSavedAnimation triggered in octopus.js");
+    //iterate Through savedAnimations array and find the selected animation, assign it to savedThetas
+    for (var i = 0; i < savedAnimations.length; i++) {
+        if (savedAnimations[i].name == id) {
+            savedThetas = savedAnimations[i].thetas;
+        }
+    }
+}
+
+function generateRandomAnimation() {
+
+    //generate random savedThetas, between 2-10 arrays. Every theta value between -180 to 180
+    savedThetas = [];
+    var keyFrameAmount = Math.floor(Math.random() * 9) + 2;
+    for (var i = 0; i < keyFrameAmount; i++) {
+        savedThetas.push([]);
+        for (var j = 0; j < numNodes; j++) {
+            savedThetas[i].push(Math.floor(Math.random() * 361) - 180);
+        }
+    }
+    console.log("savedThetas", savedThetas);
+}
+
+
+
+// Function to pause the animation
+function pauseAnimation() {
+    isPaused = true;
+}
+
+// Function to resume the animation
+function resumeAnimation() {
+    isPaused = true;
+}
+
+
+
 
 window.onload = function init() {
 
@@ -427,105 +691,156 @@ window.onload = function init() {
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
 
-    document.getElementById("slider0").onchange = function () {
-        theta[headId] = event.srcElement.value;
-        initNodes(headId);
-    };
-    document.getElementById("slider1").onchange = function () {
-        theta[upperLeg1Id] = event.srcElement.value;
-        initNodes(upperLeg1Id);
-    };
-    document.getElementById("slider2").onchange = function () {
-        theta[upperLeg2Id] = event.srcElement.value;
-        initNodes(upperLeg2Id);
-    };
-    document.getElementById("slider3").onchange = function () {
-        theta[upperLeg3Id] = event.srcElement.value;
-        initNodes(upperLeg3Id);
-    };
-    document.getElementById("slider4").onchange = function () {
-        theta[upperLeg4Id] = event.srcElement.value;
-        initNodes(upperLeg4Id);
-    };
-    document.getElementById("slider5").onchange = function () {
-        theta[upperLeg5Id] = event.srcElement.value;
-        initNodes(upperLeg5Id);
-    };
-    document.getElementById("slider6").onchange = function () {
-        theta[upperLeg6Id] = event.srcElement.value;
-        initNodes(upperLeg6Id);
-    };
-    document.getElementById("slider7").onchange = function () {
-        theta[upperLeg7Id] = event.srcElement.value;
-        initNodes(upperLeg7Id);
-    };
-    document.getElementById("slider8").onchange = function () {
-        theta[upperLeg8Id] = event.srcElement.value;
-        initNodes(upperLeg8Id);
-    };
-    document.getElementById("slider9").onchange = function () {
-        theta[middleLeg1Id] = event.srcElement.value;
-        initNodes(middleLeg1Id);
-    };
-    document.getElementById("slider10").onchange = function () {
-        theta[middleLeg2Id] = event.srcElement.value;
-        initNodes(middleLeg2Id);
-    };
-    document.getElementById("slider11").onchange = function () {
-        theta[middleLeg3Id] = event.srcElement.value;
-        initNodes(middleLeg3Id);
-    };
-    document.getElementById("slider12").onchange = function () {
-        theta[middleLeg4Id] = event.srcElement.value;
-        initNodes(middleLeg4Id);
-    };
-    document.getElementById("slider13").onchange = function () {
-        theta[middleLeg5Id] = event.srcElement.value;
-        initNodes(middleLeg5Id);
-    };
-    document.getElementById("slider14").onchange = function () {
-        theta[middleLeg6Id] = event.srcElement.value;
-        initNodes(middleLeg6Id);
-    };
-    document.getElementById("slider15").onchange = function () {
-        theta[middleLeg7Id] = event.srcElement.value;
-        initNodes(middleLeg7Id);
-    };
-    document.getElementById("slider16").onchange = function () {
-        theta[middleLeg8Id] = event.srcElement.value;
-        initNodes(middleLeg8Id);
-    };
-    document.getElementById("slider17").onchange = function () {
-        theta[lowerLeg1Id] = event.srcElement.value;
-        initNodes(lowerLeg1Id);
-    };
-    document.getElementById("slider18").onchange = function () {
-        theta[lowerLeg2Id] = event.srcElement.value;
-        initNodes(lowerLeg2Id);
-    };
-    document.getElementById("slider19").onchange = function () {
-        theta[lowerLeg3Id] = event.srcElement.value;
-        initNodes(lowerLeg3Id);
-    };
-    document.getElementById("slider20").onchange = function () {
-        theta[lowerLeg4Id] = event.srcElement.value;
-        initNodes(lowerLeg4Id);
-    };
-    document.getElementById("slider21").onchange = function () {
-        theta[lowerLeg5Id] = event.srcElement.value;
-        initNodes(lowerLeg5Id);
-    };
-    document.getElementById("slider22").onchange = function () {
-        theta[lowerLeg6Id] = event.srcElement.value;
-        initNodes(lowerLeg6Id);
-    };
-    document.getElementById("slider23").onchange = function () {
-        theta[lowerLeg7Id] = event.srcElement.value;
-        initNodes(lowerLeg7Id);
-    };
-    document.getElementById("slider24").onchange = function () {
-        theta[lowerLeg8Id] = event.srcElement.value;
-        initNodes(lowerLeg8Id);
+    { // sliders & buttons
+
+        document.getElementById("animation-duration").onchange = function () {
+            animationDuration = parseInt(event.srcElement.value);
+        };
+
+
+        document.getElementById("add-keyframe-button").onclick = function () {
+            alert("Added Keyframe!");
+            saveTheta();
+        };
+
+        document.getElementById("delete-keyframe-button").onclick = function () {
+            alert("Deleted Keyframe!");
+            savedThetas.pop();
+            console.log("savedThetas after pop: ", savedThetas);
+        };
+
+        document.getElementById("start-animation-button").onclick = function () {
+            alert("Started Animation!");
+            startAnimation();
+        };
+
+        document.getElementById("pause-animation-button").onclick = function () {
+            pauseAnimation();
+        };
+
+        document.getElementById("save-animation-button").onclick = function () {
+            saveThetasToFile();
+        };
+
+        document.getElementById("load-animation-button").onclick = function () {
+            loadThetasFromFile();
+        };
+
+        document.getElementById("save-button").onclick = function () {
+            alert("Saved Theta Array to program!");
+            addAnimation();
+        };
+
+        document.getElementById("random-animation-button").onclick = function () {
+            generateRandomAnimation();
+        };
+
+
+
+        document.getElementById("reset-button").onclick = function () {
+            savedThetas = [];
+        }
+
+        document.getElementById("slider0").onchange = function () {
+            theta[headId] = parseInt(event.srcElement.value);
+            initNodes(headId);
+        };
+        document.getElementById("slider1").onchange = function () {
+            theta[upperLeg1Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg1Id);
+        };
+        document.getElementById("slider2").onchange = function () {
+            theta[upperLeg2Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg2Id);
+        };
+        document.getElementById("slider3").onchange = function () {
+            theta[upperLeg3Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg3Id);
+        };
+        document.getElementById("slider4").onchange = function () {
+            theta[upperLeg4Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg4Id);
+        };
+        document.getElementById("slider5").onchange = function () {
+            theta[upperLeg5Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg5Id);
+        };
+        document.getElementById("slider6").onchange = function () {
+            theta[upperLeg6Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg6Id);
+        };
+        document.getElementById("slider7").onchange = function () {
+            theta[upperLeg7Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg7Id);
+        };
+        document.getElementById("slider8").onchange = function () {
+            theta[upperLeg8Id] = parseInt(event.srcElement.value);
+            initNodes(upperLeg8Id);
+        };
+        document.getElementById("slider9").onchange = function () {
+            theta[middleLeg1Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg1Id);
+        };
+        document.getElementById("slider10").onchange = function () {
+            theta[middleLeg2Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg2Id);
+        };
+        document.getElementById("slider11").onchange = function () {
+            theta[middleLeg3Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg3Id);
+        };
+        document.getElementById("slider12").onchange = function () {
+            theta[middleLeg4Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg4Id);
+        };
+        document.getElementById("slider13").onchange = function () {
+            theta[middleLeg5Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg5Id);
+        };
+        document.getElementById("slider14").onchange = function () {
+            theta[middleLeg6Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg6Id);
+        };
+        document.getElementById("slider15").onchange = function () {
+            theta[middleLeg7Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg7Id);
+        };
+        document.getElementById("slider16").onchange = function () {
+            theta[middleLeg8Id] = parseInt(event.srcElement.value);
+            initNodes(middleLeg8Id);
+        };
+        document.getElementById("slider17").onchange = function () {
+            theta[lowerLeg1Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg1Id);
+        };
+        document.getElementById("slider18").onchange = function () {
+            theta[lowerLeg2Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg2Id);
+        };
+        document.getElementById("slider19").onchange = function () {
+            theta[lowerLeg3Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg3Id);
+        };
+        document.getElementById("slider20").onchange = function () {
+            theta[lowerLeg4Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg4Id);
+        };
+        document.getElementById("slider21").onchange = function () {
+            theta[lowerLeg5Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg5Id);
+        };
+        document.getElementById("slider22").onchange = function () {
+            theta[lowerLeg6Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg6Id);
+        };
+        document.getElementById("slider23").onchange = function () {
+            theta[lowerLeg7Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg7Id);
+        };
+        document.getElementById("slider24").onchange = function () {
+            theta[lowerLeg8Id] = parseInt(event.srcElement.value);
+            initNodes(lowerLeg8Id);
+        }
     }
 
     for (i = 0; i < numNodes; i++) {

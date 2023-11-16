@@ -6,9 +6,17 @@
         /* Add some basic styling to create columns */
         .slider-column {
             float: left;
-            margin-right: 20px;
+            margin: 7px;
             border: 1px solid black;
-            padding: 10px;
+            padding: 7px;
+            font-size: 14px;
+        }
+
+        .slider-column .button {
+            float: left;
+            margin: 8px;
+            border: 1px solid black;
+            padding: 5px;
         }
 
         /* Style for the header */
@@ -19,7 +27,7 @@
         }
 
         /* Style for the container div */
-        .container {                        
+        .container {
             border: 1px solid black;
         }
 
@@ -28,6 +36,20 @@
             width: 512px;
             height: 512px;
             border: 1px solid black;
+        }
+
+        .save-button {
+            margin: 20px;
+        }
+
+        hr {
+            display: block;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            margin-left: auto;
+            margin-right: auto;
+            border-style: inset;
+            border-width: 1px;
         }
     </style>
 
@@ -101,179 +123,306 @@
 </head>
 
 <body>
-    
-        <div class="canvas-container">
-            <canvas id="gl-canvas" width="512" height="512">
-                Oops ... your browser doesn't support the HTML5 canvas element
-            </canvas>
-        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch saved animations from octopus.js
+            var savedAnimations = getSavedAnimations();
+
+            // Get the container to display saved animations
+            var savedAnimationsContainer = document.getElementById('animation-list');
+
+            // Function to update UI based on array changes
+            function updateUI() {
+                // Clear the existing content in the container
+                savedAnimationsContainer.innerHTML = '';
+
+                // Check if savedAnimations is not null and has at least one animation
+                if (savedAnimations && savedAnimations.length > 0) {
+                    // Loop through saved animations and create list items
+                    savedAnimations.forEach(function (animation) {
+                        var listItem = document.createElement('div');
+                        // Add a class to the div
+                        listItem.classList.add('saved-animation-item');
+                        listItem.id = animation.name;
+
+                        // Set text content
+                        listItem.textContent = animation.name;
+
+                        // Make the div clickable and assign an onClick function
+                        listItem.style.cursor = 'pointer';
+                        listItem.onclick = function () {
+                            // Handle the click event, you can replace this with your own logic
+                            console.log('Clicked on:', listItem.id);
+                            alert('Selected the saved: ' + listItem.id);
+                            updateSelectedSavedAnimation(listItem.id)
+
+                        };
+
+                        // Append the div to the container
+                        savedAnimationsContainer.appendChild(listItem);
+                    });
+                } else {
+                    // If there are no saved animations, display a message
+                    console.log("No saved animations");
+                    var listItem = document.createElement('div');
+                    listItem.textContent = "No saved animations";
+                    savedAnimationsContainer.appendChild(listItem);
+                }
+            }
+
+            // Initial UI update
+            updateUI();
+
+            // Listen for the event and update UI
+            document.addEventListener('savedAnimationsChanged', function () {
+                // Update UI logic here
+                getSavedAnimations();
+                updateUI();
+            });
+        });
+    </script>
+
+
+
+    <div class="canvas-container">
+
+        <canvas id="gl-canvas" width="512" height="512">
+            Oops ... your browser doesn't support the HTML5 canvas element
+        </canvas>
+
+
         <div class="slider-column">
-            <div id="slider0">
-                <div class="leg-header">Head</div>
-                head angle -180
-                <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-                180
-            </div><br/>
+
+            <div class="slider-column button">
+                <div class="save-button">
+                    <button id="save-animation-button">Save Animation To File</button>
+                </div>
+
+                <div class="save-button">
+                    <button id="load-animation-button">Load Animation From File</button>
+                </div>
+
+                <div class="save-button">
+                    <button id="random-animation-button">Generate Random Animation</button>
+                </div>
+            </div>
+
+            <div class="slider-column button">
+
+                <div class="save-button">
+                    <button id="add-keyframe-button">Add Keyframe</button>
+                </div>
+
+                <div class="save-button">
+                    <button id="delete-keyframe-button">Delete Last Keyframe</button>
+                </div>
+
+                <div class="save-button">
+                    <button id="reset-button">Reset Keyframes</button>
+                </div>
+            </div>
+
+            <div class="slider-column">
+                <div class="save-button">
+                    <button id="save-button">Save Animation To Program</button>
+                </div>
+            </div>
+
+            <div class="slider-column">
+                <div id="saved-animations-container" class="slider-column">
+                    <div class="leg-header">Saved Animations</div>
+                    <div id="animation-list"></div>
+                </div>
+            </div>
+
+            <div class="slider-column">
+                    Animation Duration (seconds)
+                    <input id="animation-duration" type="number" min="1" max="10" step="1" value="1" />            
+                <div class="save-button">
+                    <button id="start-animation-button">Start Animation</button>                    
+                </div>
+                <div class="save-button">
+                    <button id="pause-animation-button">Pause</button>                    
+                </div>                
+                
+            </div>
         </div>
-    
 
-    <div class="slider-column">
-        <div class="leg-header">Leg 1</div>
-        <div id="slider1">
-            upper leg 1 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
-        </div><br/>
-        <div id="slider9">
-            middle leg 1 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
-        </div><br/>
-        <div id="slider17">
-            lower leg 1 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
-        </div><br/>
-
-
-
-        <div class="leg-header">Leg 2</div>
-        <div id="slider2">
-            upper leg 2 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
-        </div><br/>
-        <div id="slider10">
-            middle leg 2 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
-        </div><br/>
-        <div id="slider18">
-            lower leg 2 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
-            180
-        </div><br/>
         
+
+        
+
 
     </div>
 
     
+    <div class="slider-column">
+        <div id="slider0">
+            <div class="leg-header">Head</div>
+            head angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br />
+
+        <hr>
+
+        <div class="leg-header">Leg 1</div>
+        <div id="slider1">
+            upper 1 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
+            180
+        </div><br />
+        <div id="slider9">
+            middle 1 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br />
+        <div id="slider17">
+            lower 1 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br />
+
+        <hr>
+
+        <div class="leg-header">Leg 2</div>
+        <div id="slider2">
+            upper 2 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
+            180
+        </div><br />
+        <div id="slider10">
+            middle 2 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br />
+        <div id="slider18">
+            lower 2 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            180
+        </div><br />
+
+    </div>
 
     <div class="slider-column">
         <div class="leg-header">Leg 3</div>
         <div id="slider3">
-            upper leg 3 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            upper 3 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider11">
-            middle leg 3 angle -180
+            middle 3 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider19">
-            lower leg 3 angle -180
+            lower 3 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
 
-
+        <hr>
         <div class="leg-header">Leg 4</div>
         <div id="slider4">
-            upper leg 4 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            upper 4 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider12">
-            middle leg 4 angle -180
+            middle 4 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider20">
-            lower leg 4 angle -180
+            lower 4 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
-    </div>
+        </div><br />
+        <hr>
 
-    
-
-    <div class="slider-column">
         <div class="leg-header">Leg 5</div>
         <div id="slider5">
-            upper leg 5 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            upper 5 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider13">
-            middle leg 5 angle -180
+            middle 5 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider21">
-            lower leg 5 angle -180
+            lower 5 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
+    </div>
 
+
+    <div class="slider-column">
 
         <div class="leg-header">Leg 6</div>
         <div id="slider6">
-            upper leg 6 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            upper 6 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider14">
-            middle leg 6 angle -180
+            middle 6 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider22">
-            lower leg 6 angle -180
+            lower 6 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
-    </div>
+        </div><br />
 
-   
-
-    <div class="slider-column">
+        <hr>
         <div class="leg-header">Leg 7</div>
         <div id="slider7">
-            upper leg 7 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            upper 7 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider15">
-            middle leg 7 angle -180
+            middle 7 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider23">
-            lower leg 7 angle -180
+            lower 7 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
 
-
+        <hr>
         <div class="leg-header">Leg 8</div>
         <div id="slider8">
-            upper leg 8 angle -180
-            <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
+            upper 8 angle -180
+            <input id="slide" type="range" min="-180" max="180" step="10" value="180" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider16">
-            middle leg 8 angle -180
+            middle 8 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
         <div id="slider24">
-            lower leg 8 angle -180
+            lower 8 angle -180
             <input id="slide" type="range" min="-180" max="180" step="10" value="0" />
             180
-        </div><br/>
+        </div><br />
+
     </div>
-    
+
+
+
+
+
+
 </body>
 
 </html>
