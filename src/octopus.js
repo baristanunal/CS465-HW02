@@ -82,6 +82,8 @@ var numNodes = 25;
 var numAngles = 24;
 var angle = 0;
 
+var animationDuration = 1; // in seconds
+
 
 //theta is the angle of rotation for each node 
 var theta = [0, 180, 180, 180, 180, 180, 180, 180, 180, 0,
@@ -374,6 +376,61 @@ function loadTheta() { // loads the last saved theta array from savedThetas arra
     }
 }
 
+//this function will use the savedthetas array to animate the octopus while also using the animation duration
+function startAnimation() {
+
+    //animation will have 60 frames per second
+    var frameCounter = 0;
+    var framesPerSecond = 60;
+    var frameDuration = 1000 / framesPerSecond; // in milliseconds
+    var keyFrameAmount = savedThetas.length;
+    var framesPerKeyFrame = animationDuration * framesPerSecond / (keyFrameAmount - 1);
+
+    //compute the angle differences between each keyframe
+    var angleDifferences = [];
+    for (var i = 0; i < keyFrameAmount - 1; i++) {
+        angleDifferences.push([]);
+        for (var j = 0; j < numNodes; j++) {
+            angleDifferences[i].push(savedThetas[i + 1][j] - savedThetas[i][j]);
+        }
+    }
+
+    console.log("angleDifferences", angleDifferences);
+
+
+    //call requestAnimationFrame() to animate the octopus every frameDuration milliseconds
+    var animation = setInterval(function () {
+
+        var index = Math.floor(frameCounter / framesPerKeyFrame);    //determine the current theta array
+        theta = savedThetas[index];
+
+        // update the theta array with the new angles
+        for (var j = 0; j < numAngles; j++) {
+            theta[j] += angleDifferences[index][j] / ((animationDuration / (keyFrameAmount - 1)) * framesPerSecond);
+        }
+
+        frameCounter++;
+
+        // update the figure with the new angles
+        for (var j = 0; j < numNodes; j++) {
+            initNodes(j);
+        }
+
+        // stop the animation when the last keyframe is reached
+        if (frameCounter >= (keyFrameAmount - 1) * framesPerKeyFrame) {
+            clearInterval(animation);
+        }
+
+        //call render() to draw the octopus
+        requestAnimationFrame(render);
+
+    }, frameDuration);
+
+}
+
+
+
+
 
 window.onload = function init() {
 
@@ -415,6 +472,21 @@ window.onload = function init() {
     gl.enableVertexAttribArray(vPosition);
 
     { // sliders & buttons
+
+        document.getElementById("animation-duration").onchange = function () {
+            animationDuration = parseInt(event.srcElement.value);
+        };
+
+
+        document.getElementById("add-keyframe-button").onclick = function () {
+            alert("Added Keyframe!");
+            saveTheta();
+        };
+
+        document.getElementById("start-animation-button").onclick = function () {
+            alert("Started Animation!");
+            startAnimation();
+        };
 
         document.getElementById("save-button").onclick = function () {
             alert("Saved Theta Array!");
