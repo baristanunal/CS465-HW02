@@ -98,6 +98,8 @@ var figure = [];
 
 var savedThetas = [];
 
+var savedAnimations = [];
+
 for (var i = 0; i < numNodes; i++) figure[i] = createNode(null, null, null, null);
 
 var vBuffer;
@@ -428,8 +430,39 @@ function startAnimation() {
 
 }
 
+function saveThetasToFile() {
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(savedThetas)], { type: 'text/plain' });
+    a.href = URL.createObjectURL(file);
+    a.download = 'savedThetas.txt';
+    a.click();
+}
 
+//this function opens the file selector and loads the savedThetas array from the selected file
+function loadThetasFromFile() {
 
+    var fileSelector = document.createElement('input');
+    fileSelector.type = 'file';
+    fileSelector.accept = 'text/plain';
+    fileSelector.click();
+
+    fileSelector.onchange = function () {
+        var file = fileSelector.files[0];
+        var reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        reader.onload = function (evt) {
+            var fileContents = evt.target.result;
+            savedThetas = JSON.parse(fileContents);
+            console.log("savedThetas", savedThetas);
+        }
+    }
+
+}
+
+function addAnimation() {
+    savedAnimations.push(savedThetas.slice());
+    console.log("savedAnimations", savedAnimations);
+}
 
 
 window.onload = function init() {
@@ -483,22 +516,38 @@ window.onload = function init() {
             saveTheta();
         };
 
+        document.getElementById("delete-keyframe-button").onclick = function () {
+            alert("Deleted Keyframe!");
+            savedThetas.pop();
+            console.log("savedThetas after pop: ", savedThetas);
+        };
+
         document.getElementById("start-animation-button").onclick = function () {
             alert("Started Animation!");
             startAnimation();
         };
 
+        document.getElementById("save-animation-button").onclick = function () {
+            saveThetasToFile();
+        };
+
+        document.getElementById("load-animation-button").onclick = function () {
+            loadThetasFromFile();
+        };
+
         document.getElementById("save-button").onclick = function () {
-            alert("Saved Theta Array!");
-            saveTheta();
+            alert("Saved Theta Array to program!");
+            addAnimation();
         };
 
-        document.getElementById("load-button").onclick = function () {
-            alert("Loaded Theta Array!");
-            loadTheta();
 
-            initNodes(headId);
-        };
+
+        document.getElementById("reset-button").onclick = function () {
+            alert("Reset Theta Array!");
+            theta = [0, 180, 180, 180, 180, 180, 180, 180, 180, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0];
+        }
 
         document.getElementById("slider0").onchange = function () {
             theta[headId] = parseInt(event.srcElement.value);
