@@ -361,7 +361,7 @@ function saveTheta() { // saves the theta array to savedThetas array
     console.log("savedThetas", savedThetas);
 }
 
-function loadTheta() {
+function loadTheta() { // loads the last saved theta array from savedThetas array
     if (savedThetas.length > 0) {
         theta = savedThetas.pop();
         console.log("theta", theta);
