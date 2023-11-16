@@ -389,8 +389,11 @@ function loadTheta() { // loads the last saved theta array from savedThetas arra
     }
 }
 
+var isPaused = false;
+
 //this function will use the savedthetas array to animate the octopus while also using the animation duration
 function startAnimation() {
+    isPaused = false;
 
     console.log("startAnimation triggered in octopus.js");
 
@@ -432,6 +435,11 @@ function startAnimation() {
 
     //call requestAnimationFrame() to animate the octopus every frameDuration milliseconds
     var animation = setInterval(function () {
+
+        if (isPaused) {
+            savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+            return;
+        }
 
         console.log("frameCounter", frameCounter);
 
@@ -482,14 +490,33 @@ function startAnimation() {
             clearInterval(animation);
         }
 
-        //call render() to draw the octopus
-        //requestAnimationFrame(render);
-
 
     }, frameDuration);
 
     //set savedTheta to the copy of the original savedThetas array
     savedThetas = JSON.parse(JSON.stringify(savedThetasCopy));
+
+    // Function to pause the animation
+    function pauseAnimation() {
+        isPaused = true;
+        clearInterval(animation);
+    }
+
+    // Function to resume the animation
+    function resumeAnimation() {
+        isPaused = false;
+        // Restart the animation interval
+        animation = setInterval(/* your animation logic */);
+    }
+
+    // Function to toggle between pause and resume
+    function togglePauseResume() {
+        if (isPaused) {
+            resumeAnimation();
+        } else {
+            pauseAnimation();
+        }
+    }
 
 }
 
@@ -581,16 +608,12 @@ function generateRandomAnimation() {
 
 // Function to pause the animation
 function pauseAnimation() {
-    // Stop the current animation interval
-    clearInterval(animation);
+    isPaused = true;
 }
 
 // Function to resume the animation
 function resumeAnimation() {
-    // Start a new animation interval with the stored state
-    animation = setInterval(function () {
-        // ... (unchanged code)
-    }, animationState.frameDuration);
+    isPaused = true;
 }
 
 
@@ -660,10 +683,6 @@ window.onload = function init() {
 
         document.getElementById("pause-animation-button").onclick = function () {
             pauseAnimation();
-        };
-
-        document.getElementById("resume-animation-button").onclick = function () {
-            resumeAnimation();
         };
 
         document.getElementById("save-animation-button").onclick = function () {
