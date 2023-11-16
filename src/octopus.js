@@ -500,6 +500,20 @@ function updateSelectedSavedAnimation(id) {
     }
 }
 
+function generateRandomAnimation() {
+
+    //generate random savedThetas, between 2-10 arrays. Every theta value between -180 to 180
+    savedThetas = [];
+    var keyFrameAmount = Math.floor(Math.random() * 9) + 2;
+    for (var i = 0; i < keyFrameAmount; i++) {
+        savedThetas.push([]);
+        for (var j = 0; j < numNodes; j++) {
+            savedThetas[i].push(Math.floor(Math.random() * 361) - 180);
+        }
+    }
+    console.log("savedThetas", savedThetas);
+}
+
 window.onload = function init() {
 
     canvas = document.getElementById("gl-canvas");
@@ -573,6 +587,10 @@ window.onload = function init() {
         document.getElementById("save-button").onclick = function () {
             alert("Saved Theta Array to program!");
             addAnimation();
+        };
+
+        document.getElementById("random-animation-button").onclick = function () {
+            generateRandomAnimation();
         };
 
 
