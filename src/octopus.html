@@ -33,7 +33,6 @@
         .save-button {
             margin: 20px;
         }
-
     </style>
 
     <script id="vertex-shader" type="x-shader/x-vertex">
@@ -64,8 +63,29 @@
         <canvas id="gl-canvas" width="512" height="512">
             Oops ... your browser doesn't support the HTML5 canvas element
         </canvas>
-    </div>
+        <div class="slider-column">
+            <div class="save-button">
+                <button id="save-button">Save Thetas</button>
+            </div>
 
+            <div class="save-button">
+                <button id="load-button">Load Thetas</button>
+            </div>
+
+            <div class="save-button">
+                <button id="add-keyframe-button">Add Keyframe</button>
+            </div>
+
+            <div class="animation-duration">
+                Animation Duration (seconds)
+                <input id="animation-duration" type="number" min="1" max="10" step="1" value="1" />
+            </div>
+            <div class="save-button">
+                <button id="start-animation-button">Start Animation</button>
+            </div>
+
+        </div>
+    </div>
 
     <div class="slider-column">
         <div id="slider0">
@@ -227,13 +247,9 @@
 
     </div>
 
-    <div class="save-button">
-        <button id="save-button">Save Thetas</button>
-    </div>
 
-    <div class="save-button">
-        <button id="load-button">Load Thetas</button>
-    </div>
+
+
 
 
 </body>
