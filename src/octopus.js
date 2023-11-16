@@ -66,7 +66,7 @@ var lowerLeg6Id = 22;
 var lowerLeg7Id = 23;
 var lowerLeg8Id = 24;
 
-var headHeight = 5.0;
+var headHeight = 8.0;
 var headWidth = 5.0;
 
 var upperLegWidth = 0.65;

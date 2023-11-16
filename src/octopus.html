@@ -80,22 +80,34 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Fetch saved animations from octopus.js
             var savedAnimations = getSavedAnimations();
-    
+
             // Get the container to display saved animations
             var savedAnimationsContainer = document.getElementById('animation-list');
-    
+
             // Function to update UI based on array changes
             function updateUI() {
                 // Clear the existing content in the container
                 savedAnimationsContainer.innerHTML = '';
-    
+
                 // Check if savedAnimations is not null and has at least one animation
                 if (savedAnimations && savedAnimations.length > 0) {
                     // Loop through saved animations and create list items
                     savedAnimations.forEach(function (animation) {
                         var listItem = document.createElement('div');
-                        console.log("Animation name:", animation.name);
+                        // Add a class to the div
+                        listItem.classList.add('saved-animation-item');
+
+                        // Set text content
                         listItem.textContent = animation.name;
+
+                        // Make the div clickable and assign an onClick function
+                        listItem.style.cursor = 'pointer';
+                        listItem.onclick = function () {
+                            // Handle the click event, you can replace this with your own logic
+                            console.log('Clicked on:', animation.name);
+                        };
+
+                        // Append the div to the container
                         savedAnimationsContainer.appendChild(listItem);
                     });
                 } else {
@@ -106,10 +118,10 @@
                     savedAnimationsContainer.appendChild(listItem);
                 }
             }
-    
+
             // Initial UI update
-            updateUI();            
-    
+            updateUI();
+
             // Listen for the event and update UI
             document.addEventListener('savedAnimationsChanged', function () {
                 // Update UI logic here
@@ -118,7 +130,7 @@
             });
         });
     </script>
-    
+
 
 
     <div class="canvas-container">
