@@ -42,14 +42,14 @@
         }
 
         hr {
-  display: block;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  margin-left: auto;
-  margin-right: auto;
-  border-style: inset;
-  border-width: 1px;
-}
+            display: block;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            margin-left: auto;
+            margin-right: auto;
+            border-style: inset;
+            border-width: 1px;
+        }
     </style>
 
     <script id="vertex-shader" type="x-shader/x-vertex">
@@ -76,20 +76,65 @@
 
 <body>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch saved animations from octopus.js
+            var savedAnimations = getSavedAnimations();
+    
+            // Get the container to display saved animations
+            var savedAnimationsContainer = document.getElementById('animation-list');
+    
+            // Function to update UI based on array changes
+            function updateUI() {
+                // Clear the existing content in the container
+                savedAnimationsContainer.innerHTML = '';
+    
+                // Check if savedAnimations is not null and has at least one animation
+                if (savedAnimations && savedAnimations.length > 0) {
+                    // Loop through saved animations and create list items
+                    savedAnimations.forEach(function (animation) {
+                        var listItem = document.createElement('div');
+                        console.log("Animation name:", animation.name);
+                        listItem.textContent = animation.name;
+                        savedAnimationsContainer.appendChild(listItem);
+                    });
+                } else {
+                    // If there are no saved animations, display a message
+                    console.log("No saved animations");
+                    var listItem = document.createElement('div');
+                    listItem.textContent = "No saved animations";
+                    savedAnimationsContainer.appendChild(listItem);
+                }
+            }
+    
+            // Initial UI update
+            updateUI();            
+    
+            // Listen for the event and update UI
+            document.addEventListener('savedAnimationsChanged', function () {
+                // Update UI logic here
+                getSavedAnimations();
+                updateUI();
+            });
+        });
+    </script>
+    
+
+
     <div class="canvas-container">
-        
-            <canvas id="gl-canvas" width="512" height="512">
-                Oops ... your browser doesn't support the HTML5 canvas element
-            </canvas>
-        
-        
+
+        <canvas id="gl-canvas" width="512" height="512">
+            Oops ... your browser doesn't support the HTML5 canvas element
+        </canvas>
+
+
         <div class="slider-column">
 
             <div class="slider-column button">
                 <div class="save-button">
                     <button id="save-animation-button">Save Animation To File</button>
                 </div>
-    
+
                 <div class="save-button">
                     <button id="load-animation-button">Load Animation From File</button>
                 </div>
@@ -97,17 +142,17 @@
 
             <div class="slider-column button">
 
-            <div class="save-button">
-                <button id="add-keyframe-button">Add Keyframe</button>
-            </div>
-            
-            <div class="save-button">
-                <button id="delete-keyframe-button">Delete Last Keyframe</button>
-            </div>
+                <div class="save-button">
+                    <button id="add-keyframe-button">Add Keyframe</button>
+                </div>
 
-            <div class="save-button">
-                <button id="reset-button">Reset Keyframes</button>
-            </div>
+                <div class="save-button">
+                    <button id="delete-keyframe-button">Delete Last Keyframe</button>
+                </div>
+
+                <div class="save-button">
+                    <button id="reset-button">Reset Keyframes</button>
+                </div>
             </div>
 
             <div class="slider-column">
@@ -115,10 +160,6 @@
                     <button id="save-button">Save Animation To Program</button>
                 </div>
             </div>
-            
-
-            
-
 
             <div class="animation-duration">
                 Animation Duration (seconds)
@@ -127,6 +168,13 @@
             <div class="save-button">
                 <button id="start-animation-button">Start Animation</button>
             </div>
+
+            <div id="saved-animations-container" class="slider-column">
+                <div class="leg-header">Saved Animations</div>
+                <div id="animation-list"></div>
+            </div>
+
+
 
         </div>
     </div>
