@@ -99,7 +99,7 @@ var angle = 0;
 var animationDuration = 1; // in seconds
 
 
-
+var headPosition = [0, 0, 0]
 
 //theta is the angle of rotation for each node 
 var theta = [0, 180, 180, 180, 180, 180, 180, 180, 180, 0,
@@ -165,7 +165,8 @@ function initNodes(Id) {
 
         case headId:
 
-            m = rotate(theta[headId], 0, 1, 0);
+            m = translate(headPosition[0], headPosition[1], headPosition[2]);
+            m = mult(m, rotate(theta[headId], 0, 1, 0));
             figure[headId] = createNode(m, head, null, upperLeg1Id);
             break;
 
@@ -660,7 +661,7 @@ window.onload = function init() {
 
     instanceMatrix = mat4();
 
-    projectionMatrix = ortho(-10.0, 10.0, -10.0, 10.0, -10.0, 10.0);
+    projectionMatrix = ortho(-15.0, 15.0, -15.0, 15.0, -15.0, 15.0);
     modelViewMatrix = mat4();
 
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),
@@ -840,6 +841,14 @@ window.onload = function init() {
         document.getElementById("slider24").onchange = function () {
             theta[lowerLeg8Id] = parseInt(event.srcElement.value);
             initNodes(lowerLeg8Id);
+        }
+        document.getElementById("slider25").onchange = function () {
+            headPosition[0] = parseInt(event.srcElement.value);
+            initNodes(headId);
+        }
+        document.getElementById("slider26").onchange = function () {   
+            headPosition[1] = parseInt(event.srcElement.value);
+            initNodes(headId);
         }
     }
 
