@@ -20,6 +20,9 @@ var instanceMatrix;
 
 var modelViewMatrixLoc;
 
+var pointsArray = [];
+var normalsArray = [];
+
 var vertices = [
 
     vec4(-0.5, -0.5, 0.5, 1.0),
@@ -134,8 +137,6 @@ for (var i = 0; i < numNodes; i++) figure[i] = createNode(null, null, null, null
 
 var vBuffer;
 var modelViewLoc;
-
-var pointsArray = [];
 
 //-------------------------------------------
 
@@ -376,14 +377,27 @@ function lowerLeg() {
 }
 
 
-
 function quad(a, b, c, d) {
-    pointsArray.push(vertices[a]);
-    pointsArray.push(vertices[b]);
-    pointsArray.push(vertices[c]);
-    pointsArray.push(vertices[d]);
-}
 
+    var t1 = subtract(vertices[b], vertices[a]);
+    var t2 = subtract(vertices[c], vertices[b]);
+    var normal = cross(t1, t2);
+    var normal = vec3(normal);
+
+    pointsArray.push(vertices[a]); 
+    normalsArray.push(normal); 
+    pointsArray.push(vertices[b]); 
+    normalsArray.push(normal); 
+    pointsArray.push(vertices[c]); 
+    normalsArray.push(normal);   
+    pointsArray.push(vertices[a]);  
+    normalsArray.push(normal); 
+    pointsArray.push(vertices[c]); 
+    normalsArray.push(normal); 
+    pointsArray.push(vertices[d]); 
+    normalsArray.push(normal);    
+    
+}
 
 function cube() {
     quad(1, 0, 3, 2);
@@ -393,6 +407,35 @@ function cube() {
     quad(4, 5, 6, 7);
     quad(5, 4, 0, 1);
 }
+
+function colorCube()
+{
+    quad( 1, 0, 3, 2 );
+    quad( 2, 3, 7, 6 );
+    quad( 3, 0, 4, 7 );
+    quad( 6, 5, 1, 2 );
+    quad( 4, 5, 6, 7 );
+    quad( 5, 4, 0, 1 );
+}
+
+function initBkgnd() {
+    backTex = gl.createTexture();
+    backTex.Img = new Image();
+    backTex.Img.onload = function() {
+        handleBkTex(backTex);
+    }
+    backTex.Img.src = "ocean_2.jpeg";
+}
+
+function handleBkTex(tex) {
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tex.Img);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+}
+
 
 function saveTheta() { // saves the theta array to savedThetas array
     savedThetas.push(theta.slice());
@@ -710,12 +753,15 @@ window.onload = function init() {
 
     canvas = document.getElementById("gl-canvas");
 
-
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) { alert("WebGL isn't available"); }
 
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    //gl.clearColor(1.0, 1.0, 1.0, 1.0);
+
+    // for background
+    gl.clearColor(0.0, 0.5, 1.0, 1.0);
+    initBkgnd();
 
     gl.enable(gl.DEPTH_TEST);
 
@@ -723,8 +769,25 @@ window.onload = function init() {
     //  Load shaders and initialize attribute buffers
     //
     program = initShaders(gl, "vertex-shader", "fragment-shader");
-
     gl.useProgram(program);
+
+    colorCube();
+
+    var nBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, nBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(normalsArray), gl.STATIC_DRAW );
+    
+    var vNormal = gl.getAttribLocation( program, "vNormal" );
+    gl.vertexAttribPointer( vNormal, 3, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vNormal );
+
+    var vBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW );
+
+    var vPosition = gl.getAttribLocation(program, "vPosition");
+    gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(vPosition);
 
     ambientProduct = mult(lightAmbient, materialAmbient);
     diffuseProduct = mult(lightDiffuse, materialDiffuse);
@@ -734,7 +797,7 @@ window.onload = function init() {
 
     instanceMatrix = mat4();
 
-    projectionMatrix = ortho(-15.0, 15.0, -15.0, 15.0, -15.0, 15.0);
+    projectionMatrix = ortho(-15.0, 15.0, -15.0, 15.0, -100.0, 100.0);
     modelViewMatrix = mat4();
 
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),
@@ -753,17 +816,6 @@ window.onload = function init() {
     gl.uniformMatrix4fv(gl.getUniformLocation(program, "projectionMatrix"), false, flatten(projectionMatrix));
 
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix")
-
-    cube();
-
-    vBuffer = gl.createBuffer();
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW);
-
-    var vPosition = gl.getAttribLocation(program, "vPosition");
-    gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vPosition);
 
     { // sliders & buttons
 
@@ -928,7 +980,6 @@ window.onload = function init() {
             headPosition[1] = parseInt(event.srcElement.value);
             initNodes(headId);
         }
-
         document.getElementById("slider-head-z").onchange = function () {
             theta[headZId] = parseInt(event.srcElement.value);
             initNodes(headId);
@@ -945,8 +996,7 @@ window.onload = function init() {
 
 var render = function () {
 
-    gl.clear(gl.COLOR_BUFFER_BIT);
-
+    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     traverse(headId);
     requestAnimFrame(render);
 }
